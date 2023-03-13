@@ -145,7 +145,7 @@ const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, classN
 
 				>{example.getValue()}</CalculatorButton>
 			)}
-			<CalculatorLine line={line} />
+			{temp && <CalculatorLine line={line} />}
 		</CalculatorCase>
 	)
 }

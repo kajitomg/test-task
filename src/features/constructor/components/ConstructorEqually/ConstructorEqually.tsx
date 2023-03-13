@@ -139,7 +139,7 @@ const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, set
 			draggable={draggable}
 		>
 			<CalculatorButton.Blue className={'constructor-equally'}>{value}</CalculatorButton.Blue>
-			<CalculatorLine line={line} />
+			{temp && <CalculatorLine line={line} />}
 		</CalculatorCase>
 	)
 }

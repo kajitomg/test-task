@@ -143,7 +143,7 @@ const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, s
 					className={['constructor-number', example.getValue() === NumberTypes.Zero && 'big'].join(' ')}
 				>{example.getValue()}</CalculatorButton>
 			)}
-			<CalculatorLine line={line} />
+			{temp && <CalculatorLine line={line} />}
 		</CalculatorCase>
 	)
 }

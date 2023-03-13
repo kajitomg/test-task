@@ -131,7 +131,7 @@ const ConstructorDisplay: FC<ConstructorDisplayProps> = ({ value, className, set
 			draggable={temp ? false : draggable}
 		>
 			<CalculatorViewer className={['constructor-display', fontsize].join(' ')}>{value}</CalculatorViewer>
-			<CalculatorLine line={line} />
+			{temp && <CalculatorLine line={line} />}
 		</CalculatorCase>
 	)
 }
