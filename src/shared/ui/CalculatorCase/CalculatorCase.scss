@@ -1,7 +1,10 @@
 .calculator{
 
 	&__case{
-		overflow: hidden;
+
+		position: relative;
+		
+		overflow: visible;
 
 		width: 100%;
 

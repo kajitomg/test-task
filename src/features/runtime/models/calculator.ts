@@ -5,16 +5,8 @@ export class CalculatorRuntime extends Calculator {
 	private previewValue: string = '';
 	private operation: OperatorTypes | null = null;
 
-	constructor(displayPosition?: Positions.first, operatorsPosition?: Exclude<Positions, Positions.first>, numbersPosition?: Exclude<Positions, Positions.first>, equallyPosition?: Exclude<Positions, Positions.first>) {
+	constructor() {
 		super()
-		displayPosition && this.initDisplay(displayPosition)
-		operatorsPosition && this.initOperators(operatorsPosition)
-		numbersPosition && this.initNumbers(numbersPosition)
-		equallyPosition && this.initEqually(equallyPosition)
-		this.addElement(this.getDisplay())
-		this.addElement(this.getOperators())
-		this.addElement(this.getNumbers())
-		this.addElement(this.getEqually())
 	}
 
 	public addSymbol(value: string) {

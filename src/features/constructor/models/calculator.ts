@@ -6,6 +6,10 @@ enum shiftDirections {
 	up = 1,
 	down = -1,
 }
+export enum Modes {
+	constructor = 1,
+	runtime = 2
+}
 
 
 export class CalculatorConstructor extends Calculator {
@@ -21,6 +25,7 @@ export class CalculatorConstructor extends Calculator {
 			this.shiftElement(element, position)
 		}
 	}
+
 	public deleteElement(element: Element) {
 		this.getElements().splice(element.getPosition() - 1, 1)
 	}
@@ -39,22 +44,27 @@ export class CalculatorConstructor extends Calculator {
 
 		return shiftDirection
 	}
+	private shiftAll() {
+		this.getElements().map((element, index) => {
+			element.setPosition(index + 1)
+		})
+	}
 
-	public shiftElement(element: Element, position: Positions) {
+	private shiftElement(element: Element, position: Positions) {
 		let shiftDirection = this.shiftDirection(element, position)
 
 		if (element.name !== ElementTypes.Display && position === Positions.first) {
 			this.getElements().splice(element.getPosition() - 1, 1)
-			return this.getElements().splice(Positions.second - 1, 0, element)
+			this.getElements().splice(Positions.second - 1, 0, element)
+			return this.shiftAll()
 		}
 		if (element.name === ElementTypes.Display) {
 			return
 		}
-
-		this.getElements()[position - 1].setPosition(position + shiftDirection)
 		this.getElements().splice(element.getPosition() - 1, 1)
 		element.setPosition(position)
 		this.getElements().splice(position - 1, 0, element)
+		return this.shiftAll()
 
 	}
 

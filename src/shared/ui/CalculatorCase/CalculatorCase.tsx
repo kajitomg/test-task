@@ -19,14 +19,16 @@ interface CalculatorCaseProps {
 
 	onDoubleClickHandler: () => void;
 
+	draggable?: boolean;
+
 }
 
-const CalculatorCase: FC<CalculatorCaseProps> = ({ children, className, onDragOverHandler, onDragEndHandler, onDragLeaveHandler, onDragStartHandler, onDropHandler, onDoubleClickHandler }) => {
+const CalculatorCase: FC<CalculatorCaseProps> = ({ children, className, onDragOverHandler, onDragEndHandler, onDragLeaveHandler, onDragStartHandler, onDropHandler, onDoubleClickHandler, draggable = true }) => {
 
 	return (
 		<div
 			className={['calculator__case', className].join(' ')}
-			draggable={true}
+			draggable={draggable}
 			onDragOver={(event: React.DragEvent<HTMLDivElement>) => onDragOverHandler(event)}
 			onDragLeave={(event: React.DragEvent<HTMLDivElement>) => onDragLeaveHandler(event)}
 			onDragStart={(event: React.DragEvent<HTMLDivElement>) => onDragStartHandler(event)}

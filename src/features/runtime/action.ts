@@ -87,7 +87,7 @@ export const RenderRuntimeElement = (calculator: CalculatorRuntime) => {
 	return (dispatch: Dispatch<CalculatorAction>) => {
 		try {
 			dispatch({
-				type: CalculatorActionTypes.REFRESH__CALCULATOR__ELEMENT,
+				type: CalculatorActionTypes.SET__CALCULATOR__ELEMENT,
 				payload: calculator.getElements()
 			})
 		} catch (error) {

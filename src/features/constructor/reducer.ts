@@ -2,19 +2,19 @@ import { Element } from "../calculators";
 
 
 export enum CalculatorActionTypes {
-	REFRESH__CALCULATOR__ELEMENT = 'REFRESH__CALCULATOR__ELEMENT',
-	REFRESH__CALCULATOR__TEMP__ELEMENT = 'REFRESH__CALCULATOR__TEMP__ELEMENT',
+	REFRESH__CALCULATOR__CONSTRUCTOR__ELEMENT = 'REFRESH__CALCULATOR__CONSTRUCTOR__ELEMENT',
+	REFRESH__CALCULATOR__CONSTRUCTOR__TEMP__ELEMENT = 'REFRESH__CALCULATOR__CONSTRUCTOR__TEMP__ELEMENT',
 }
 
-interface RefreshCalculatorElement {
-	type: CalculatorActionTypes.REFRESH__CALCULATOR__ELEMENT;
+interface RefreshCalculatorConstructorElement {
+	type: CalculatorActionTypes.REFRESH__CALCULATOR__CONSTRUCTOR__ELEMENT;
 	payload: Element[];
 }
-interface RefreshCalculatorTempElement {
-	type: CalculatorActionTypes.REFRESH__CALCULATOR__TEMP__ELEMENT;
+interface RefreshCalculatorConstructorTempElement {
+	type: CalculatorActionTypes.REFRESH__CALCULATOR__CONSTRUCTOR__TEMP__ELEMENT;
 	payload: Element[];
 }
-export type CalculatorAction = RefreshCalculatorElement | RefreshCalculatorTempElement
+export type CalculatorAction = RefreshCalculatorConstructorElement | RefreshCalculatorConstructorTempElement
 
 interface CalculatorState {
 	constructorElements: Element[];
@@ -30,12 +30,12 @@ const defaultState: CalculatorState = {
 export const CalculatorConstructorReducer = (state = defaultState, action: CalculatorAction): CalculatorState => {
 
 	switch (action.type) {
-		case CalculatorActionTypes.REFRESH__CALCULATOR__ELEMENT:
+		case CalculatorActionTypes.REFRESH__CALCULATOR__CONSTRUCTOR__ELEMENT:
 			return {
 				...state,
 				constructorElements: action.payload
 			};
-		case CalculatorActionTypes.REFRESH__CALCULATOR__TEMP__ELEMENT:
+		case CalculatorActionTypes.REFRESH__CALCULATOR__CONSTRUCTOR__TEMP__ELEMENT:
 			return {
 				...state,
 				constructorTempElements: action.payload

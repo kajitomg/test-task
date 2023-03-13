@@ -31,6 +31,9 @@ export class Calculator {
 			this.elements[element.getPosition() - 1] = element
 		}
 	}
+	public addElements(elements: Element[]) {
+		this.elements = elements
+	}
 	public getElements() {
 		return this.elements
 	}

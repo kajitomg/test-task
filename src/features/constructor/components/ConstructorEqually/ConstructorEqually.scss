@@ -1,4 +1,7 @@
 .constructor-wrapper{
+	position: relative;
+	overflow: visible;
+
 	cursor: pointer;
 
 	margin: 8px 0;
@@ -16,5 +19,7 @@
 	height: auto;
 
 	flex: 1 1 100%;
+
+	
 
 }
