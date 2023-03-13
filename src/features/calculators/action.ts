@@ -55,19 +55,6 @@ export const AddConstructorElement = (calculator: Calculator, element: Element) 
 		}
 	}
 }
-export const AddConstructorTempElement = (calculator: Calculator, element: Element) => {
-	return (dispatch: Dispatch<CalculatorAction>) => {
-		try {
-			calculator.addElement(element)
-			dispatch({
-				type: CalculatorActionTypes.REFRESH__CALCULATOR__CONSTUCTOR__TEMP__ELEMENT,
-				payload: calculator.elements
-			})
-		} catch (error) {
-			console.log(error)
-		}
-	}
-}
 
 export const AddElement = (calculator: Calculator, element: Element, render?: boolean) => {
 	return (dispatch: Dispatch<CalculatorAction>) => {
