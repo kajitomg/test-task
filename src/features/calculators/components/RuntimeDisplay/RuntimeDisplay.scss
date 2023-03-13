@@ -1,0 +1,25 @@
+.wrapper{
+	margin: 8px 0;
+
+	width: 100%;
+	height: auto;
+
+	flex: 1 1 auto;
+	display: flex;
+	flex-wrap: nowrap;
+
+}
+
+.runtime-display{
+	margin: 4px;
+
+	width: 100%;
+	height: auto;
+
+	flex: 1 1 100%;
+
+	&.smallfontsize{
+		font-size: var(--fs-display-small);
+	}
+	
+}

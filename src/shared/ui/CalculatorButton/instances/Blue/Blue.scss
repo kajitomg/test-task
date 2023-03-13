@@ -1,0 +1,24 @@
+.calculator{
+
+	&__button{
+		&.blue{
+
+			min-width: 64px;
+			min-height: 64px;
+			width: fit-content;
+		
+			background: var(--clr-blue);
+		
+			color: var(--clr-text-white);
+		
+			border: none;
+
+			&:hover{
+			
+				border: none;
+	
+			}
+		
+		}
+	}
+}

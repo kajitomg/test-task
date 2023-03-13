@@ -1,0 +1,21 @@
+.constructor-operators{
+	cursor: pointer;
+
+	margin: 8px 0;
+	
+	flex: 1 0 auto;
+	display: flex;
+	flex-wrap: nowrap;
+
+}
+
+.constructor-operator{
+
+	margin: 4px;
+	
+	flex: 1 1 calc(25% - 32px);
+
+	&:hover{
+		border: 1px solid var(--clr-border);
+	}
+}

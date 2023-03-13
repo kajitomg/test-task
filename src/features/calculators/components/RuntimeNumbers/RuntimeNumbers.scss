@@ -1,0 +1,18 @@
+.runtime-numbers{
+	margin: 8px 0;
+
+	width: 100%;
+	height: auto;
+
+	flex: 1 1 auto;
+	display: flex;
+	flex-wrap: wrap;
+
+}
+.runtime-number{
+	margin: 4px;
+	flex: 1 1 calc(33% - 24px);
+		&.big{
+			flex: 1 1 calc(66% - 20px);;
+		}
+}

@@ -1,0 +1,30 @@
+.calculator{
+
+	&__button{
+		overflow: hidden;
+		
+		cursor: pointer;
+	
+		height: 48px;
+		width: 48px;
+	
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	
+		background: var(--clr-white);
+		color: var(--clr-text-black);
+		border: 1px solid var(--clr-border);
+	
+		border-radius: var(--radius-button);
+	
+		font-size: var(--fs-main);
+		font-weight: var(--fw-main);
+
+		&:hover{
+
+			border: 2px solid var(--clr-blue);
+
+		}
+	}
+}

@@ -1,0 +1,18 @@
+.calculator{
+
+	&__modes{
+		overflow: hidden;
+
+		width: 100%;
+		height: fit-content;
+
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+
+		background: var(--clr-grey);
+
+		border-radius: var(--radius-button);
+
+	}
+}

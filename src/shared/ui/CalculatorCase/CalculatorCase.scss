@@ -1,0 +1,20 @@
+.calculator{
+
+	&__case{
+		overflow: hidden;
+
+		width: 100%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		align-content: flex-start;
+
+		background: var(--clr-white);
+
+		border-radius: var(--radius-button);
+
+		box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.06), 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+	}
+}

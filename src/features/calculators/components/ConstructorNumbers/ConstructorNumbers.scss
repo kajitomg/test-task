@@ -1,0 +1,21 @@
+.constructor-numbers{
+	cursor: pointer;
+
+	margin: 8px 0;
+	
+	flex: 1 0 auto;
+	display: flex;
+	flex-wrap: wrap;
+
+}
+
+.constructor-number{
+	margin: 4px;
+	flex: 1 1 calc(33% - 24px);
+		&.big{
+			flex: 1 1 calc(66% - 20px);;
+		}
+	&:hover{
+		border: 1px solid var(--clr-border);
+	}
+}
