@@ -2,14 +2,16 @@ import { TypedUseSelectorHook, useSelector } from "react-redux";
 import { RootState } from "../pages";
 import { useDispatch } from "react-redux"
 import { bindActionCreators } from "redux"
-import * as calculatorAction from './calculators/action'
+import * as constructorAction from './constructor/action'
+import * as runtimeAction from './runtime/action'
 
 
 export const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
 
 
 const actions = {
-	...calculatorAction
+	...constructorAction,
+	...runtimeAction
 }
 
 export const useActions = () => {

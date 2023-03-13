@@ -7,6 +7,11 @@
 	display: flex;
 	flex-wrap: wrap;
 
+	opacity: 0.5;
+	&.active{
+		opacity: 1;
+	}
+
 }
 
 .constructor-number{

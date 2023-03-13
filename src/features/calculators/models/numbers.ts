@@ -16,21 +16,28 @@ export enum NumberTypes {
 }
 
 export class Number {
-	value: NumberTypes;
+	private value: NumberTypes;
 
 	constructor(value: NumberTypes) {
 		this.value = value;
+	}
+	public getValue() {
+		return this.value;
 	}
 
 }
 
 export class Numbers extends Element {
-	active: boolean = false;
 	readonly examples: Number[] = [];
+	position: Exclude<Positions, Positions.first> = Positions.third
 
-	constructor(position: Exclude<Positions, Positions.first>) {
-		super(position, ElementTypes.Numbers);
+	constructor(position: Exclude<Positions, Positions.first>, active: boolean = true) {
+		super(position, ElementTypes.Numbers, active);
+		this.setActive(true);
 		this.initNumbers();
+	}
+	public getPosition(): Exclude<Positions, Positions.first> {
+		return this.position
 	}
 
 	private initNumbers(): void {
@@ -45,10 +52,6 @@ export class Numbers extends Element {
 		this.examples.push(new Number(NumberTypes.Nine))
 		this.examples.push(new Number(NumberTypes.Zero))
 		this.examples.push(new Number(NumberTypes.Splitter))
-	}
-
-	public setActive(boolean: boolean): void {
-		this.active = boolean
 	}
 
 }

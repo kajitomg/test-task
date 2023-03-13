@@ -9,12 +9,15 @@ export enum OperatorTypes {
 }
 
 export class Operator {
-	value: OperatorTypes;
+	private value: OperatorTypes;
 	constructor(value: OperatorTypes) {
 		this.value = value
 	}
 	setValue(value: OperatorTypes) {
 		this.value = value;
+	}
+	getValue() {
+		return this.value
 	}
 }
 
@@ -46,12 +49,16 @@ class Addition extends Operator {
 }
 
 export class Operators extends Element {
-	active: boolean = false;
 	readonly examples: Operator[] = [];
+	position: Exclude<Positions, Positions.first> = Positions.second
 
-	constructor(position: Exclude<Positions, Positions.first>) {
-		super(position, ElementTypes.Operators)
+	constructor(position: Exclude<Positions, Positions.first>, active: boolean = true) {
+		super(position, ElementTypes.Operators, active);
+		this.setActive(true)
 		this.initOperators();
+	}
+	public getPosition(): Exclude<Positions, Positions.first> {
+		return this.position
 	}
 
 	private initOperators(): void {
@@ -59,9 +66,6 @@ export class Operators extends Element {
 		this.examples.push(new Multiplication())
 		this.examples.push(new Subtraction())
 		this.examples.push(new Addition())
-	}
-	public setActive(boolean: boolean): void {
-		this.active = boolean
 	}
 
 }

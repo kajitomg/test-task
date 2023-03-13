@@ -3,14 +3,19 @@ import { Element, ElementTypes } from "./element";
 
 
 export class Equally extends Element {
-	value: string = '=';
-	active: boolean = false;
+	private value: string = '=';
+	position: Exclude<Positions, Positions.first> = Positions.fourth
 
-	constructor(position: Exclude<Positions, Positions.first>) {
-		super(position, ElementTypes.Equally);
+	constructor(position: Exclude<Positions, Positions.first>, active: boolean = true) {
+		super(position, ElementTypes.Equally, active);
+		this.setActive(true)
 	}
-	public setActive(boolean: boolean): void {
-		this.active = boolean
+	public getPosition(): Exclude<Positions, Positions.first> {
+		return this.position
+	}
+
+	public getValue() {
+		return this.value
 	}
 
 }

@@ -4,10 +4,20 @@ import { Element, ElementTypes } from "./element";
 
 
 export class Display extends Element {
-	active: boolean = false;
-	value: string = '0';
+	private value: string = '0';
+	position: Positions.first = Positions.first
 
-	constructor(position: Positions.first) {
-		super(position, ElementTypes.Display);
+	constructor(position: Positions.first, active: boolean = true) {
+		super(position, ElementTypes.Display, active);
+		this.setActive(true);
+	}
+	public getPosition(): Positions.first {
+		return this.position
+	}
+	getValue() {
+		return this.value
+	}
+	setValue(value: string) {
+		return this.value = value
 	}
 }

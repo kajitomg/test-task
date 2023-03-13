@@ -1,4 +1,3 @@
-import { MouseEventHandler } from 'react';
 import './CalculatorButton.scss'
 import { Blue } from './instances/Blue';
 

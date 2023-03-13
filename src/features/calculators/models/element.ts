@@ -8,21 +8,25 @@ export enum ElementTypes {
 }
 
 export class Element {
-	name: ElementTypes;
-	active: boolean = true;
-	private position: Positions;
+	public name: ElementTypes;
+	private active: boolean;
+	position: Positions;
 
-	constructor(position: Positions, name: ElementTypes) {
+	constructor(position: Positions, name: ElementTypes, active: boolean = true) {
+		this.active = active;
 		this.position = position
 		this.name = name;
 	}
 	public setPosition(position: Positions) {
 		this.position = position
 	}
+	public getPosition(): Positions {
+		return this.position
+	}
 	public setActive(boolean: boolean) {
 		this.active = boolean;
 	}
-	public getPosition(): Positions {
-		return this.position
+	public getActive() {
+		return this.active
 	}
 }

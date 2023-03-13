@@ -1,5 +1,4 @@
 import React, { FC } from 'react'
-import { Calculator, Element } from '../../../features';
 import './CalculatorCase.scss'
 
 interface CalculatorCaseProps {

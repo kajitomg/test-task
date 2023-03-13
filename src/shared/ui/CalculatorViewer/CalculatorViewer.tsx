@@ -3,7 +3,7 @@ import './CalculatorViewer.scss'
 
 interface CalculatorViewerProps {
 
-	children: string | null | typeof NaN;
+	children: string | null | typeof NaN | undefined;
 
 	className?: string;
 

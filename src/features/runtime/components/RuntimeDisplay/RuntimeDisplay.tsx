@@ -9,9 +9,9 @@ interface RuntimeDisplayProps {
 }
 
 const RuntimeDisplay: FC<RuntimeDisplayProps> = () => {
-	const { value } = useTypedSelector(state => state.calculator)
+	const { runtimeValue } = useTypedSelector(state => state.calculatorRuntime)
 
-	const children = value === null ? '0' : typeof value === typeof NaN ? 'Не определено' : value
+	const children = runtimeValue === null ? '0' : typeof runtimeValue === typeof NaN ? 'Не определено' : runtimeValue
 
 
 	const fontsize = children.toLocaleString().length > 8 && 'smallfontsize'

@@ -1,14 +1,15 @@
 import React, { FC } from 'react'
-import { useActions } from '../../..';
 import { CalculatorButton } from '../../../../shared/ui/CalculatorButton';
-import { Calculator, Operators, OperatorTypes } from '../../models';
+import { Operators, OperatorTypes } from '../../../calculators';
+import { useActions } from '../../../hooks';
+import { CalculatorRuntime } from '../../models';
 import './RuntimeOperators.scss'
 
 interface RuntimeOperatorsProps {
 
 	operators: Operators;
 
-	calculator: Calculator;
+	calculator: CalculatorRuntime;
 
 }
 
@@ -27,10 +28,10 @@ const RuntimeOperators: FC<RuntimeOperatorsProps> = ({ operators, calculator }) 
 			{
 				operators.examples.map((example) =>
 					<CalculatorButton
-						key={example.value}
+						key={example.getValue()}
 						className={'runtime-operator'}
-						onClick={() => onClickHandler(example.value)}
-					>{example.value}</CalculatorButton>
+						onClick={() => onClickHandler(example.getValue())}
+					>{example.getValue()}</CalculatorButton>
 				)
 			}
 		</div>

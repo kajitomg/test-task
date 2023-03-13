@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
 import { CalculatorButton } from '../../../../shared/ui/CalculatorButton';
 import { CalculatorCase } from '../../../../shared/ui/CalculatorCase';
+import { Element } from '../../../calculators';
 import { useActions } from '../../../hooks';
-import { Calculator, Element } from '../../models';
 import './ConstructorEqually.scss'
 
 interface ConstructorEquallyProps {
@@ -11,19 +11,15 @@ interface ConstructorEquallyProps {
 
 	className: string;
 
-	calculator: Calculator;
-
 	element: Element;
 
 	setDragElement: (element: any) => void;
 
-	temp?: boolean
-
 }
 
-const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, calculator, setDragElement, element, temp }) => {
+const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, setDragElement, element }) => {
 
-	const { DeleteElement } = useActions()
+	const { DeleteConstructorElement } = useActions()
 
 	const onDragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
@@ -47,9 +43,6 @@ const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, cal
 
 	};
 	const onDoubleClickHandler = () => {
-		if (temp) {
-			return DeleteElement(calculator, element, true)
-		}
 	};
 
 	return (

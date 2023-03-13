@@ -1,8 +1,10 @@
 import { combineReducers } from "redux"
-import { CalculatorReducer } from '../features'
+import { CalculatorRuntimeReducer } from '../features/runtime/reducer'
+import { CalculatorConstructorReducer } from '../features/constructor/reducer'
 
 export const rootReducer = combineReducers({
-	calculator: CalculatorReducer,
+	calculatorRuntime: CalculatorRuntimeReducer,
+	calculatorConstructor: CalculatorConstructorReducer,
 
 })
 

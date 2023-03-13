@@ -1,12 +1,13 @@
 import React, { FC, useEffect, useState } from 'react'
-import { useActions, useTypedSelector } from '../../features'
-import { Calculator, Positions, ConstructorDisplay, ConstructorEqually, ConstructorNumbers, ConstructorOperators, RuntimeDisplay, RuntimeEqually, RuntimeNumbers, RuntimeOperators, ElementTypes, Element } from '../../features/calculators'
+import { Calculator, Positions, ElementTypes, Element } from '../../features/calculators'
 import { CalculatorModes } from '../../shared/ui/CalculatorModes'
 import { ReactComponent as EyeIcon } from './../../temp/eye.svg'
 import { ReactComponent as SelectorIcon } from './../../temp/selector.svg'
 import { ReactComponent as AddIcon } from './../../temp/add.svg'
+import { useActions, useTypedSelector } from '../../features/hooks'
+import { CalculatorConstructor, ConstructorDisplay, ConstructorEqually, ConstructorNumbers, ConstructorOperators } from '../../features/constructor'
+import { CalculatorRuntime, RuntimeDisplay, RuntimeEqually, RuntimeNumbers, RuntimeOperators } from '../../features/runtime'
 import './ConstructorCalculator.scss'
-import { DeleteElement } from '../../features/calculators/action'
 
 enum Modes {
 	constructor = 1,
@@ -18,13 +19,14 @@ interface ConstructorCalculatorProps {
 }
 
 const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
-	const { elements, value, constructorElements } = useTypedSelector(state => state.calculator)
+	const { runtimeElements, runtimeValue } = useTypedSelector(state => state.calculatorRuntime)
+	const { constructorElements, constructorTempElements } = useTypedSelector(state => state.calculatorConstructor)
 
-	const { AddElement, ShiftElement, AddConstructorElement } = useActions()
+	const [calculator, setCalculator] = useState<CalculatorRuntime | null>(null)
+	const [constructorCalculator, setConstructorCalculator] = useState(new CalculatorConstructor())
+	const [constructorTempCalculator, setConstructorTempCalculator] = useState(new CalculatorConstructor())
 
-
-	const [calculator, setCalculator] = useState(new Calculator())
-	const [constructorCalculator, setConstructorCalculator] = useState(new Calculator())
+	const { AddConstructorElement, AddConstructorTempElement, RenderRuntimeElement } = useActions()
 
 	const [dragOver, setDragOver] = useState<boolean>(false)
 	const [draggedElement, setDraggedElement] = useState<Element | null>(null)
@@ -36,21 +38,23 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 		constructorCalculator.initOperators(Positions.second)
 		constructorCalculator.initNumbers(Positions.third)
 		constructorCalculator.initEqually(Positions.fourth)
-		AddConstructorElement(constructorCalculator, constructorCalculator.display)
-		AddConstructorElement(constructorCalculator, constructorCalculator.operators)
-		AddConstructorElement(constructorCalculator, constructorCalculator.equally)
-		AddConstructorElement(constructorCalculator, constructorCalculator.numbers)
+		AddConstructorElement(constructorCalculator, constructorCalculator.getDisplay())
+		AddConstructorElement(constructorCalculator, constructorCalculator.getOperators())
+		AddConstructorElement(constructorCalculator, constructorCalculator.getEqually())
+		AddConstructorElement(constructorCalculator, constructorCalculator.getNumbers())
 	}, [])
+
+	console.log(constructorTempElements)
 	useEffect(() => {
-		calculator.initDisplay(Positions.first)
-		calculator.initOperators(Positions.second)
-		calculator.initNumbers(Positions.third)
-		calculator.initEqually(Positions.fourth)
-		// AddElement(calculator, calculator.display, true)
-		// AddElement(calculator, calculator.operators, true)
-		// AddElement(calculator, calculator.equally, true)
-		// AddElement(calculator, calculator.numbers, true)
-	}, [])
+		if (mode === Modes.runtime) {
+			setCalculator(new CalculatorRuntime(
+				constructorTempCalculator.getDisplay()?.getPosition(),
+				constructorTempCalculator.getOperators()?.getPosition(),
+				constructorTempCalculator.getNumbers()?.getPosition(),
+				constructorTempCalculator.getEqually()?.getPosition()
+			))
+		}
+	}, [mode])
 
 
 	const setConstructorMode = () => {
@@ -71,11 +75,15 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 
 	};
 
-	const onDropHandler = (event: React.DragEvent<HTMLDivElement>, calculator: Calculator, constructorCalculator: Calculator) => {
+	const onDropHandler = (event: React.DragEvent<HTMLDivElement>, constructorCalculator: CalculatorConstructor, constructorTempCalculator: CalculatorConstructor) => {
 		event.preventDefault();
 		if (draggedElement) {
-			AddElement(calculator, draggedElement, true)
-			DeleteElement(constructorCalculator, draggedElement, true)
+			AddConstructorTempElement(constructorTempCalculator, draggedElement)
+			constructorCalculator.getElements().forEach((element) => {
+				if (element.name === draggedElement.name) {
+					element.setActive(false)
+				}
+			})
 		}
 		setDragOver(false)
 		setDraggedElement(null)
@@ -109,42 +117,39 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 				<div className={'calculator-page__calculators'}>
 					<div className={'calculator-page__calculator-constructor calculator'}>
 						{constructorElements?.map((element) =>
-							element.name === ElementTypes.Display && <ConstructorDisplay
-								key={element.name}
-								setDragElement={setDraggedElement}
-								element={element}
-								calculator={constructorCalculator}
-								value={constructorCalculator.display.value}
-								className={element.active ? 'active' : ''} /> ||
 
-							element.name === ElementTypes.Operators && <ConstructorOperators
-								operators={constructorCalculator.operators}
+							(mode === Modes.constructor || element.getActive()) && element.name === ElementTypes.Display && <ConstructorDisplay
 								key={element.name}
 								setDragElement={setDraggedElement}
 								element={element}
-								calculator={constructorCalculator}
-								className={element.active ? 'active' : ''} /> ||
+								value={constructorCalculator.getDisplay()?.getValue()}
+								className={element.getActive() ? 'active' : ''} /> ||
 
-							element.name === ElementTypes.Numbers && <ConstructorNumbers
-								numbers={constructorCalculator.numbers}
+							(mode === Modes.constructor || element.getActive()) && element.name === ElementTypes.Operators && <ConstructorOperators
+								operators={constructorCalculator.getOperators()}
 								key={element.name}
 								setDragElement={setDraggedElement}
 								element={element}
-								calculator={constructorCalculator}
-								className={element.active ? 'active' : ''} /> ||
+								className={element.getActive() ? 'active' : ''} /> ||
 
-							element.name === ElementTypes.Equally && <ConstructorEqually
-								value={constructorCalculator.equally.value}
+							(mode === Modes.constructor || element.getActive()) && element.name === ElementTypes.Numbers && <ConstructorNumbers
+								numbers={constructorCalculator.getNumbers()}
 								key={element.name}
 								setDragElement={setDraggedElement}
 								element={element}
-								calculator={constructorCalculator}
-								className={element.active ? 'active' : ''} />
+								className={element.getActive() ? 'active' : ''} /> ||
+
+							(mode === Modes.constructor || element.getActive()) && element.name === ElementTypes.Equally && <ConstructorEqually
+								value={constructorCalculator.getEqually()?.getValue()}
+								key={element.name}
+								setDragElement={setDraggedElement}
+								element={element}
+								className={element.getActive() ? 'active' : ''} />
 						)}
 					</div>
-					<div className={['calculator-page__calculator-runtime', 'calculator', 'runtime', elements.length <= 0 ? 'empty' : '', dragOver ? 'dragover' : ''].join(' ')}
+					<div className={['calculator-page__calculator-runtime', 'calculator', 'runtime', constructorTempElements.length <= 0 && mode === Modes.constructor ? 'empty' : '', dragOver ? 'dragover' : ''].join(' ')}
 						onDragOver={(event) => onDragOverHandler(event)}
-						onDrop={(event) => onDropHandler(event, calculator, constructorCalculator)}
+						onDrop={(event) => onDropHandler(event, constructorCalculator, constructorTempCalculator)}
 						onDragLeave={(event) => onDragLeaveHandler(event)}
 						onDragEnd={(event) => onDragEndHandler(event)}
 
@@ -152,59 +157,48 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 						{
 
 
-							elements.length > 0
-								?
-								mode === Modes.constructor
-									?
-									elements?.map((element) =>
-										element.name === ElementTypes.Display && <ConstructorDisplay
-											key={element.name}
-											setDragElement={setDraggedElement}
-											element={element}
-											calculator={calculator}
-											value={calculator.display.value}
-											className={element.active ? 'active' : ''} /> ||
+							constructorTempElements.length > 0 && mode === Modes.constructor &&
+							constructorTempElements?.map((element) =>
+								element.name === ElementTypes.Display && <ConstructorDisplay
+									key={element.name}
+									setDragElement={setDraggedElement}
+									element={element}
+									value={constructorTempCalculator.getDisplay()?.getValue()}
+									className={element.getActive() ? 'active' : ''} /> ||
 
-										element.name === ElementTypes.Operators && <ConstructorOperators
-											operators={calculator.operators}
-											key={element.name}
-											setDragElement={setDraggedElement}
-											element={element}
-											calculator={calculator}
-											className={element.active ? 'active' : ''} /> ||
+								element.name === ElementTypes.Operators && <ConstructorOperators
+									operators={constructorTempCalculator.getOperators()}
+									key={element.name}
+									setDragElement={setDraggedElement}
+									element={element}
+									className={element.getActive() ? 'active' : ''} /> ||
 
-										element.name === ElementTypes.Numbers && <ConstructorNumbers
-											numbers={calculator.numbers}
-											key={element.name}
-											setDragElement={setDraggedElement}
-											element={element}
-											calculator={calculator}
-											className={element.active ? 'active' : ''} /> ||
+								element.name === ElementTypes.Numbers && <ConstructorNumbers
+									numbers={constructorTempCalculator.getNumbers()}
+									key={element.name}
+									setDragElement={setDraggedElement}
+									element={element}
+									className={element.getActive() ? 'active' : ''} /> ||
 
-										element.name === ElementTypes.Equally && <ConstructorEqually
-											value={calculator.equally.value}
-											key={element.name}
-											setDragElement={setDraggedElement}
-											element={element}
-											calculator={calculator}
-											className={element.active ? 'active' : ''} />
-									)
-									:
-									mode === Modes.runtime
-									&&
-									elements.length > 0 &&
-									elements.map((element) =>
-										element.name === ElementTypes.Display && <RuntimeDisplay key={element.name} /> ||
-										element.name === ElementTypes.Operators && <RuntimeOperators calculator={calculator} operators={calculator.operators} key={element.name} /> ||
-										element.name === ElementTypes.Numbers && <RuntimeNumbers calculator={calculator} numbers={calculator.numbers} key={element.name} /> ||
-										element.name === ElementTypes.Equally && <RuntimeEqually calculator={calculator} equally={calculator.equally} key={element.name} />
-									)
-
-								:
-								<div className={'runtime__block'}>
-									<AddIcon className={'runtime__icon'} />
-									<h4 className={'runtime__text'}>Перетащите сюда<span>любой элемент из левой панели</span></h4>
-								</div>
+								element.name === ElementTypes.Equally && <ConstructorEqually
+									value={constructorTempCalculator.getEqually()?.getValue()}
+									key={element.name}
+									setDragElement={setDraggedElement}
+									element={element}
+									className={element.getActive() ? 'active' : ''} />
+							) ||
+							runtimeElements.length > 0 && mode === Modes.runtime && calculator &&
+							runtimeElements.map((element) =>
+								element.name === ElementTypes.Display && <RuntimeDisplay key={element.name} /> ||
+								element.name === ElementTypes.Operators && <RuntimeOperators calculator={calculator} operators={calculator.getOperators()} key={element.name} /> ||
+								element.name === ElementTypes.Numbers && <RuntimeNumbers calculator={calculator} numbers={calculator.getNumbers()} key={element.name} /> ||
+								element.name === ElementTypes.Equally && <RuntimeEqually calculator={calculator} equally={calculator.getEqually()} key={element.name} />
+							) ||
+							constructorTempElements.length === 0 && mode === Modes.constructor &&
+							<div className={'runtime__block'}>
+								<AddIcon className={'runtime__icon'} />
+								<h4 className={'runtime__text'}>Перетащите сюда<span>любой элемент из левой панели</span></h4>
+							</div>
 						}
 					</div>
 				</div>

@@ -1,29 +1,25 @@
 import React, { FC } from 'react'
-import { CalculatorButton } from '../../../../shared/ui/CalculatorButton';
-import { CalculatorCase } from '../../../../shared/ui/CalculatorCase';
-import { useActions } from '../../../hooks';
-import { Calculator, Element, Operators } from '../../models'
-import './ConstructorOperators.scss'
+import { CalculatorButton } from '../../../../shared/ui/CalculatorButton'
+import { CalculatorCase } from '../../../../shared/ui/CalculatorCase'
+import { Element, Numbers, NumberTypes } from '../../../calculators'
+import { useActions } from '../../../hooks'
+import './ConstructorNumbers.scss'
 
-interface ConstructorOperatorsProps {
+interface ConstructorNumbersProps {
 
-	operators: Operators;
+	numbers: Numbers;
 
 	className: string;
-
-	calculator: Calculator;
 
 	element: Element;
 
 	setDragElement: (element: any) => void;
 
-	temp?: boolean
-
 }
 
-const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, className, calculator, setDragElement, element, temp }) => {
+const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, setDragElement, element }) => {
 
-	const { DeleteElement } = useActions()
+	const { DeleteConstructorElement } = useActions()
 
 	const onDragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
@@ -47,15 +43,11 @@ const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, classN
 
 	};
 	const onDoubleClickHandler = () => {
-		if (temp) {
-			return DeleteElement(calculator, element, true)
-		}
-
 	};
 
 	return (
 		<CalculatorCase
-			className={'constructor-operators'}
+			className={['constructor-numbers', className].join(' ')}
 			onDragEndHandler={onDragEndHandler}
 			onDragLeaveHandler={onDragLeaveHandler}
 			onDragOverHandler={onDragOverHandler}
@@ -63,16 +55,14 @@ const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, classN
 			onDropHandler={onDropHandler}
 			onDoubleClickHandler={onDoubleClickHandler}
 		>
-			{operators.examples.map((example) =>
+			{numbers.examples.map((example) =>
 				<CalculatorButton
-
-					key={example.value}
-					className={['constructor-operator', className].join(' ')}
-
-				>{example.value}</CalculatorButton>
+					key={example.getValue()}
+					className={['constructor-number', example.getValue() === NumberTypes.Zero && 'big'].join(' ')}
+				>{example.getValue()}</CalculatorButton>
 			)}
 		</CalculatorCase>
 	)
 }
 
-export { ConstructorOperators }
+export { ConstructorNumbers }

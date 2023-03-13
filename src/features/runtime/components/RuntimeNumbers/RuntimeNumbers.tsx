@@ -1,14 +1,15 @@
 import React, { FC } from 'react'
-import { useActions } from '../../..';
 import { CalculatorButton } from '../../../../shared/ui/CalculatorButton'
-import { Calculator, Numbers, NumberTypes } from '../../models'
+import { Numbers, NumberTypes } from '../../../calculators';
+import { useActions } from '../../../hooks';
+import { CalculatorRuntime } from '../../models';
 import './RuntimeNumbers.scss'
 
 interface RuntimeNumbersProps {
 
 	numbers: Numbers;
 
-	calculator: Calculator;
+	calculator: CalculatorRuntime;
 
 }
 
@@ -25,10 +26,10 @@ const RuntimeNumbers: FC<RuntimeNumbersProps> = ({ numbers, calculator }) => {
 			{
 				numbers.examples.map((example) =>
 					<CalculatorButton
-						key={example.value}
-						className={['runtime-number', example.value === NumberTypes.Zero && 'big'].join(' ')}
-						onClick={() => onClickHandler(example.value)}
-					>{example.value}</CalculatorButton>
+						key={example.getValue()}
+						className={['runtime-number', example.getValue() === NumberTypes.Zero && 'big'].join(' ')}
+						onClick={() => onClickHandler(example.getValue())}
+					>{example.getValue()}</CalculatorButton>
 				)
 			}
 		</div>

@@ -1,29 +1,25 @@
 import React, { FC } from 'react'
-import { CalculatorButton } from '../../../../shared/ui/CalculatorButton'
 import { CalculatorCase } from '../../../../shared/ui/CalculatorCase'
-import { useActions } from '../../../hooks'
-import { Calculator, Element, Numbers, NumberTypes } from '../../models'
-import './ConstructorNumbers.scss'
+import { CalculatorViewer } from '../../../../shared/ui/CalculatorViewer'
+import { Element } from '../../../calculators';
+import { useActions } from '../../../hooks';
+import './ConstructorDisplay.scss'
 
-interface ConstructorNumbersProps {
+interface ConstructorDisplayProps {
 
-	numbers: Numbers;
+	value: string;
 
 	className: string;
-
-	calculator: Calculator;
 
 	element: Element;
 
 	setDragElement: (element: any) => void;
 
-	temp?: boolean
-
 }
 
-const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, calculator, setDragElement, element, temp }) => {
+const ConstructorDisplay: FC<ConstructorDisplayProps> = ({ value, className, setDragElement, element }) => {
 
-	const { DeleteElement } = useActions()
+	const { DeleteConstructorElement, AddConstructorElement } = useActions()
 
 	const onDragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
@@ -47,29 +43,26 @@ const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, c
 
 	};
 	const onDoubleClickHandler = () => {
-		if (temp) {
-			return DeleteElement(calculator, element, true)
-		}
+
 	};
+
+
+
+	const fontsize = value.toLocaleString().length > 8 && 'smallfontsize'
 
 	return (
 		<CalculatorCase
-			className={'constructor-numbers'}
-			onDragEndHandler={onDragEndHandler}
-			onDragLeaveHandler={onDragLeaveHandler}
+			className={['constructor-wrapper', className].join(' ')}
 			onDragOverHandler={onDragOverHandler}
+			onDragLeaveHandler={onDragLeaveHandler}
 			onDragStartHandler={onDragStartHandler}
+			onDragEndHandler={onDragEndHandler}
 			onDropHandler={onDropHandler}
 			onDoubleClickHandler={onDoubleClickHandler}
 		>
-			{numbers.examples.map((example) =>
-				<CalculatorButton
-					key={example.value}
-					className={['constructor-number', example.value === NumberTypes.Zero && 'big', className].join(' ')}
-				>{example.value}</CalculatorButton>
-			)}
+			<CalculatorViewer className={['constructor-display', fontsize].join(' ')}>{value}</CalculatorViewer>
 		</CalculatorCase>
 	)
 }
 
-export { ConstructorNumbers }
+export { ConstructorDisplay }

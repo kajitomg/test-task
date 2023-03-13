@@ -1,29 +1,25 @@
 import React, { FC } from 'react'
-import { CalculatorCase } from '../../../../shared/ui/CalculatorCase'
-import { CalculatorViewer } from '../../../../shared/ui/CalculatorViewer'
+import { CalculatorButton } from '../../../../shared/ui/CalculatorButton';
+import { CalculatorCase } from '../../../../shared/ui/CalculatorCase';
+import { Element, Operators } from '../../../calculators';
 import { useActions } from '../../../hooks';
-import { Calculator, Element } from '../../models';
-import './ConstructorDisplay.scss'
+import './ConstructorOperators.scss'
 
-interface ConstructorDisplayProps {
+interface ConstructorOperatorsProps {
 
-	value: string;
+	operators: Operators;
 
 	className: string;
-
-	calculator: Calculator;
 
 	element: Element;
 
 	setDragElement: (element: any) => void;
 
-	temp?: boolean
-
 }
 
-const ConstructorDisplay: FC<ConstructorDisplayProps> = ({ value, className, calculator, setDragElement, element, temp }) => {
+const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, className, setDragElement, element }) => {
 
-	const { DeleteElement, AddElement } = useActions()
+	const { DeleteConstructorElement } = useActions()
 
 	const onDragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
@@ -47,28 +43,29 @@ const ConstructorDisplay: FC<ConstructorDisplayProps> = ({ value, className, cal
 
 	};
 	const onDoubleClickHandler = () => {
-		if (temp) {
-			return DeleteElement(calculator, element, true)
-		}
+
 	};
-
-
-
-	const fontsize = value.toLocaleString().length > 8 && 'smallfontsize'
 
 	return (
 		<CalculatorCase
-			className={'constructor-wrapper'}
-			onDragOverHandler={onDragOverHandler}
-			onDragLeaveHandler={onDragLeaveHandler}
-			onDragStartHandler={onDragStartHandler}
+			className={['constructor-operators', className].join(' ')}
 			onDragEndHandler={onDragEndHandler}
+			onDragLeaveHandler={onDragLeaveHandler}
+			onDragOverHandler={onDragOverHandler}
+			onDragStartHandler={onDragStartHandler}
 			onDropHandler={onDropHandler}
 			onDoubleClickHandler={onDoubleClickHandler}
 		>
-			<CalculatorViewer className={['constructor-display', fontsize, className].join(' ')}>{value}</CalculatorViewer>
+			{operators.examples.map((example) =>
+				<CalculatorButton
+
+					key={example.getValue()}
+					className={['constructor-operator'].join(' ')}
+
+				>{example.getValue()}</CalculatorButton>
+			)}
 		</CalculatorCase>
 	)
 }
 
-export { ConstructorDisplay }
+export { ConstructorOperators }

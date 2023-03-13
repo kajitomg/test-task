@@ -1,14 +1,16 @@
 import React, { FC } from 'react'
 import { CalculatorButton } from '../../../../shared/ui/CalculatorButton';
+import { Calculator, Equally } from '../../../calculators';
+import { CalculatorConstructor } from '../../../constructor';
 import { useActions } from '../../../hooks';
-import { Calculator, Equally } from '../../models';
+import { CalculatorRuntime } from '../../models';
 import './RuntimeEqually.scss'
 
 interface RuntimeEquallyProps {
 
 	equally: Equally;
 
-	calculator: Calculator;
+	calculator: CalculatorRuntime;
 
 }
 
@@ -26,7 +28,7 @@ const RuntimeEqually: FC<RuntimeEquallyProps> = ({ equally, calculator }) => {
 			<CalculatorButton.Blue
 				className={'runtime-equally'}
 				onClick={() => onClickHandler()}
-			>{equally.value}</CalculatorButton.Blue>
+			>{equally.getValue()}</CalculatorButton.Blue>
 		</div>
 	)
 }

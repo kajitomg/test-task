@@ -2,6 +2,10 @@
 	cursor: pointer;
 	
 	margin: 8px 0;
+	opacity: 0.5;
+	&.active{
+		opacity: 1;
+	}
 }
 
 .constructor-display{
@@ -15,4 +19,5 @@
 	&.smallfontsize{
 		font-size: var(--fs-display-small);
 	}
+
 }
