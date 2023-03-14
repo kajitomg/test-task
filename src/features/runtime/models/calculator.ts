@@ -19,9 +19,6 @@ export class CalculatorRuntime extends Calculator {
 			return
 		}
 		this.value = [this.value, value].join('')
-		if (this.value.length >= 15) {
-			this.value = this.makeString(Math.ceil(this.makeNumber(this.value) * (10 ** 15)) / (10 ** 15))
-		}
 	}
 	public setValue(value: string) {
 		this.getDisplay()?.setValue(value)
@@ -93,8 +90,14 @@ export class CalculatorRuntime extends Calculator {
 		}
 		return tempvalue
 	}
+	private roundingString(value: string, number: number): string {
+		return value = this.makeString(Math.ceil(this.makeNumber(value) * (10 ** number)) / (10 ** number))
+	}
 	public setPreviewValue(value: string): void {
 		this.previewValue = value
+		if (value.length >= 15) {
+			this.previewValue = this.roundingString(value, 15)
+		}
 	}
 	public getPreviewValue() {
 		return this.previewValue
