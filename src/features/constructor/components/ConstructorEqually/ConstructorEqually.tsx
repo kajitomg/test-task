@@ -2,10 +2,9 @@ import React, { FC, useState } from 'react'
 import { CalculatorButton } from '../../../../shared/ui/CalculatorButton';
 import { CalculatorCase } from '../../../../shared/ui/CalculatorCase';
 import { CalculatorLine, Lines } from '../../../../shared/ui/CalculatorLine';
-import { Element, Positions } from '../../../calculators';
-import { useActions } from '../../../hooks';
+import { Element } from '../../../calculators';
 import { CalculatorConstructor, Modes } from '../../models';
-import ConstructorDraggableElement from '../ConstructorDraggableElement/ConstructorDraggableElement';
+import { ConstructorDraggableElement } from '../ConstructorDraggableElement';
 import './ConstructorEqually.scss'
 
 interface ConstructorEquallyProps {
@@ -38,9 +37,13 @@ const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, set
 
 	const [line, setLine] = useState<Lines>(Lines.none)
 
+	const getIsShadowClass = () => {
+		return isTemp ? 'temp' : ''
+	}
+
 	return (
 		<CalculatorCase
-			className={['constructor-wrapper', className, isTemp ? 'temp' : ''].join(' ')}
+			className={['constructor-wrapper', className, getIsShadowClass()].join(' ')}
 		>
 			<CalculatorButton.Blue className={'constructor-equally'} draggable={draggable}>{value}</CalculatorButton.Blue>
 			{isTemp && <CalculatorLine line={line} />}

@@ -24,11 +24,6 @@ export class CalculatorRuntime extends Calculator {
 		this.getDisplay()?.setValue(value)
 		this.value = value
 	}
-	private isZero(value: string) {
-		if (this.getValue() === '0' && value !== ',') {
-			this.setValue('')
-		}
-	}
 	public getValue() {
 		return this.value
 	}
@@ -37,7 +32,77 @@ export class CalculatorRuntime extends Calculator {
 		this.getDisplay()?.setValue('')
 		this.value = '';
 	}
+	public setPreviewValue(value: string): void {
+		this.previewValue = value
+		if (value.length >= 15) {
+			this.previewValue = this.roundingString(value, 15)
+		}
+	}
+	public getPreviewValue() {
+		return this.previewValue
+	}
 
+	public makeOperation(): void {
+		this.isNan()
+		const firstMember = this.makeNumber(this.previewValue)
+		const secondMember = this.makeNumber(this.value)
+
+		if (!this.previewValue) {
+			this.setPreviewValue(this.value)
+			return this.setValue('')
+		}
+		if (!this.value) {
+			this.setPreviewValue(this.previewValue)
+			return this.setValue('')
+		}
+
+		if (this.previewValue && this.value) {
+			if (this.operation === OperatorTypes.division) {
+				return this.makeDivision(firstMember, secondMember)
+			}
+			if (this.operation === OperatorTypes.multiplication) {
+				return this.makeMultiplication(firstMember, secondMember)
+			}
+			if (this.operation === OperatorTypes.addition) {
+				return this.makeAddition(firstMember, secondMember)
+			}
+			if (this.operation === OperatorTypes.subtraction) {
+				return this.makeSubtraction(firstMember, secondMember)
+			}
+		}
+	}
+
+	public setOperation(operation: OperatorTypes | null): void {
+		this.makeOperation()
+		this.operation = null
+		this.clearValue()
+		this.operation = operation
+	}
+	private makeDivision(firstMember: number, secondMember: number) {
+		this.setPreviewValue(this.makeString(firstMember / secondMember))
+		this.operation = null
+		this.setValue('')
+	}
+	private makeMultiplication(firstMember: number, secondMember: number) {
+		this.setPreviewValue(this.makeString(firstMember * secondMember))
+		this.operation = null
+		this.setValue('')
+	}
+	private makeAddition(firstMember: number, secondMember: number) {
+		this.setPreviewValue(this.makeString(firstMember + secondMember))
+		this.operation = null
+		this.setValue('')
+	}
+	private makeSubtraction(firstMember: number, secondMember: number) {
+		this.setPreviewValue(this.makeString(firstMember - secondMember))
+		this.operation = null
+		this.setValue('')
+	}
+	private isZero(value: string) {
+		if (this.getValue() === '0' && value !== ',') {
+			this.setValue('')
+		}
+	}
 	private isSplitter(string: string): boolean {
 		if (string === NumberTypes.Splitter || string === '.') {
 			return true
@@ -92,59 +157,5 @@ export class CalculatorRuntime extends Calculator {
 	}
 	private roundingString(value: string, number: number): string {
 		return value = this.makeString(Math.ceil(this.makeNumber(value) * (10 ** number)) / (10 ** number))
-	}
-	public setPreviewValue(value: string): void {
-		this.previewValue = value
-		if (value.length >= 15) {
-			this.previewValue = this.roundingString(value, 15)
-		}
-	}
-	public getPreviewValue() {
-		return this.previewValue
-	}
-
-	public MakeOperation(): void {
-		this.isNan()
-		const firstMember = this.makeNumber(this.previewValue)
-		const secondMember = this.makeNumber(this.value)
-
-		if (!this.previewValue) {
-			this.setPreviewValue(this.value)
-			return this.setValue('')
-		}
-		if (!this.value) {
-			this.setPreviewValue(this.previewValue)
-			return this.setValue('')
-		}
-
-		if (this.previewValue && this.value) {
-			if (this.operation === OperatorTypes.division) {
-				this.setPreviewValue(this.makeString(firstMember / secondMember))
-				this.operation = null
-				return this.setValue('')
-			}
-			if (this.operation === OperatorTypes.multiplication) {
-				this.setPreviewValue(this.makeString(firstMember * secondMember))
-				this.operation = null
-				return this.setValue('')
-			}
-			if (this.operation === OperatorTypes.addition) {
-				this.setPreviewValue(this.makeString(firstMember + secondMember))
-				this.operation = null
-				return this.setValue('')
-			}
-			if (this.operation === OperatorTypes.subtraction) {
-				this.setPreviewValue(this.makeString(firstMember - secondMember))
-				this.operation = null
-				return this.setValue('')
-			}
-		}
-	}
-
-	public setOperation(operation: OperatorTypes | null): void {
-		this.MakeOperation()
-		this.operation = null
-		this.clearValue()
-		this.operation = operation
 	}
 }

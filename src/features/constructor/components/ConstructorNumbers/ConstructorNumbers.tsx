@@ -2,10 +2,9 @@ import React, { FC, useEffect, useState } from 'react'
 import { CalculatorButton } from '../../../../shared/ui/CalculatorButton'
 import { CalculatorCase } from '../../../../shared/ui/CalculatorCase'
 import { CalculatorLine, Lines } from '../../../../shared/ui/CalculatorLine'
-import { Element, Numbers, NumberTypes, Positions } from '../../../calculators'
-import { useActions } from '../../../hooks'
+import { Element, Number, Numbers, NumberTypes } from '../../../calculators'
 import { CalculatorConstructor, Modes } from '../../models'
-import ConstructorDraggableElement from '../ConstructorDraggableElement/ConstructorDraggableElement'
+import { ConstructorDraggableElement } from '../ConstructorDraggableElement';
 import './ConstructorNumbers.scss'
 
 interface ConstructorNumbersProps {
@@ -37,14 +36,21 @@ const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, s
 
 	const [line, setLine] = useState<Lines>(Lines.none)
 
+	const getBigButtonClass = (example: Number): string => {
+		return example.getValue() === NumberTypes.Zero ? 'big' : ''
+	}
+	const getIsShadowClass = () => {
+		return isTemp ? 'temp' : ''
+	}
+
 	return (
 		<CalculatorCase
-			className={['constructor-numbers', className, isTemp ? 'temp' : ''].join(' ')}
+			className={['constructor-numbers', className, getIsShadowClass()].join(' ')}
 		>
 			{numbers.examples.map((example) =>
 				<CalculatorButton
 					key={example.getValue()}
-					className={['constructor-number', example.getValue() === NumberTypes.Zero && 'big'].join(' ')}
+					className={['constructor-number', getBigButtonClass(example)].join(' ')}
 				>{example.getValue()}</CalculatorButton>
 			)}
 			{isTemp && <CalculatorLine line={line} />}

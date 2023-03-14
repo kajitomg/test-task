@@ -98,7 +98,7 @@ export const RenderRuntimeElement = (calculator: CalculatorRuntime) => {
 export const MakeOperation = (calculator: CalculatorRuntime) => {
 	return (dispatch: Dispatch<CalculatorAction>) => {
 		try {
-			calculator.MakeOperation()
+			calculator.makeOperation()
 			dispatch({
 				type: CalculatorActionTypes.SET__CALCULATOR__VALUE,
 				payload: calculator.getValue()

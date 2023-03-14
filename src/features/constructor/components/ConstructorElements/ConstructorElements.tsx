@@ -45,7 +45,9 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 		AddConstructorElement(calculator, calculator.getNumbers())
 	}, [])
 
-
+	const getIsDraggableElement = (element: Element): boolean => {
+		return element.getActive() && mode === Modes.constructor
+	}
 
 	return (
 		<>
@@ -55,7 +57,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 					key={element.name}
 					calculator={calculator}
 					calculatorTemp={calculatorTemp}
-					draggable={element.getActive() && mode === Modes.constructor}
+					draggable={getIsDraggableElement(element)}
 					mode={mode}
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
@@ -68,7 +70,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 					key={element.name}
 					calculator={calculator}
 					calculatorTemp={calculatorTemp}
-					draggable={element.getActive() && mode === Modes.constructor}
+					draggable={getIsDraggableElement(element)}
 					mode={mode}
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
@@ -80,7 +82,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 					key={element.name}
 					calculator={calculator}
 					calculatorTemp={calculatorTemp}
-					draggable={element.getActive() && mode === Modes.constructor}
+					draggable={getIsDraggableElement(element)}
 					mode={mode}
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
@@ -92,7 +94,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 					key={element.name}
 					calculator={calculator}
 					calculatorTemp={calculatorTemp}
-					draggable={element.getActive() && mode === Modes.constructor}
+					draggable={getIsDraggableElement(element)}
 					mode={mode}
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}

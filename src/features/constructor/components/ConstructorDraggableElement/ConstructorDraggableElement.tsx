@@ -91,11 +91,6 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 						e.setActive(false)
 					}
 				})
-				calculatorTemp.getElements().forEach((e) => {
-					if (e.name === draggedElement?.name) {
-						AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition())
-					}
-				})
 				AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition())
 			}
 			if (getMousePositionOnElement(event) >= getElementHeight(event) / 2) {
@@ -136,9 +131,12 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 			}
 		}
 	}
+	const getIsDraggedClass = (): string => {
+		return !draggable ? 'nodragged' : ''
+	}
 	return (
 		<div
-			className={['drag-element', !draggable ? 'nodragged' : ''].join(' ')}
+			className={['drag-element', getIsDraggedClass()].join(' ')}
 			onDragEnd={() => onDragEndHandler()}
 			onDragLeave={() => onDragLeaveHandler()}
 			onDragOver={(event) => onDragOverHandler(event)}
@@ -150,4 +148,4 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 	)
 }
 
-export default ConstructorDraggableElement
+export { ConstructorDraggableElement }

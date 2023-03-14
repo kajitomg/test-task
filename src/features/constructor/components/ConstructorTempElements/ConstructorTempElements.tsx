@@ -25,6 +25,10 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 
 	const { constructorTempElements } = useTypedSelector(state => state.calculatorConstructor)
 
+	const getConditionActive = (element: Element): string => {
+		return draggedElement?.name !== element?.name ? 'active' : ''
+	}
+
 
 	return (
 		<>
@@ -41,7 +45,7 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 					draggedElement={draggedElement}
 					element={element}
 					value={calculator.getDisplay()?.getValue()}
-					className={draggedElement?.name !== element?.name ? 'active' : ''}
+					className={getConditionActive(element)}
 				/> ||
 
 				element.name === ElementTypes.Operators && <ConstructorOperators
@@ -55,7 +59,7 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
 					element={element}
-					className={draggedElement?.name !== element?.name ? 'active' : ''}
+					className={getConditionActive(element)}
 				/> ||
 
 				element.name === ElementTypes.Numbers && <ConstructorNumbers
@@ -69,7 +73,7 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
 					element={element}
-					className={draggedElement?.name !== element?.name ? 'active' : ''}
+					className={getConditionActive(element)}
 				/> ||
 
 				element.name === ElementTypes.Equally && <ConstructorEqually
@@ -83,7 +87,7 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
 					element={element}
-					className={draggedElement?.name !== element?.name ? 'active' : ''}
+					className={getConditionActive(element)}
 				/>
 			)
 			}

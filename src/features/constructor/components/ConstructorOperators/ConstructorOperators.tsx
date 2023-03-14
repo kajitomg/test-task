@@ -2,10 +2,9 @@ import React, { FC, useState } from 'react'
 import { CalculatorButton } from '../../../../shared/ui/CalculatorButton';
 import { CalculatorCase } from '../../../../shared/ui/CalculatorCase';
 import { CalculatorLine, Lines } from '../../../../shared/ui/CalculatorLine';
-import { Element, Operators, Positions } from '../../../calculators';
-import { useActions } from '../../../hooks';
+import { Element, Operators } from '../../../calculators';
 import { CalculatorConstructor, Modes } from '../../models';
-import ConstructorDraggableElement from '../ConstructorDraggableElement/ConstructorDraggableElement';
+import { ConstructorDraggableElement } from '../ConstructorDraggableElement';
 import './ConstructorOperators.scss'
 
 interface ConstructorOperatorsProps {
@@ -36,13 +35,16 @@ const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, classN
 
 	const [line, setLine] = useState<Lines>(Lines.none)
 
+	const getIsShadowClass = () => {
+		return isTemp ? 'temp' : ''
+	}
+
 	return (
 		<CalculatorCase
-			className={['constructor-operators', className, isTemp ? 'temp' : ''].join(' ')}
+			className={['constructor-operators', className, getIsShadowClass()].join(' ')}
 		>
 			{operators.examples.map((example) =>
 				<CalculatorButton
-
 					key={example.getValue()}
 					className={['constructor-operator'].join(' ')}
 

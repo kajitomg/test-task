@@ -1,15 +1,15 @@
-import React, { FC, useEffect, useState } from 'react'
-import { Positions, Element } from '../../features/calculators'
+import React, { FC, useState } from 'react'
+import { Element } from '../../features/calculators'
 import { CalculatorModes } from '../../shared/ui/CalculatorModes'
 import { ReactComponent as EyeIcon } from './../../temp/eye.svg'
 import { ReactComponent as SelectorIcon } from './../../temp/selector.svg'
 import { ReactComponent as AddIcon } from './../../temp/add.svg'
-import { useActions, useTypedSelector } from '../../features/hooks'
+import { useTypedSelector } from '../../features/hooks'
 import { CalculatorConstructor, ConstructorElements, Modes } from '../../features/constructor'
-import { CalculatorRuntime, RuntimeElements } from '../../features/runtime'
+import { RuntimeElements } from '../../features/runtime'
 import { ConstructorTempElements } from '../../features/constructor/components/ConstructorTempElements'
-import './ConstructorCalculator.scss'
 import { ConstructorDraggableArea } from '../../features/constructor/components/ConstructorDraggableArea'
+import './ConstructorCalculator.scss'
 
 
 interface ConstructorCalculatorProps {
@@ -17,7 +17,6 @@ interface ConstructorCalculatorProps {
 }
 
 const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
-	const { runtimeElements } = useTypedSelector(state => state.calculatorRuntime)
 	const { constructorTempElements } = useTypedSelector(state => state.calculatorConstructor)
 
 	const [constructorCalculator, setConstructorCalculator] = useState(new CalculatorConstructor())
@@ -35,6 +34,16 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 	const setRuntimeMode = () => {
 		setMode(Modes.runtime)
 	}
+	const getIsRuntimeMode = (): boolean => {
+		return mode === Modes.runtime ? true : false
+	}
+	const getIsConstructorMode = (): boolean => {
+		return mode === Modes.constructor ? true : false
+	}
+	const getIsElementsInTempConstructor = (): boolean => {
+		return constructorTempElements.length > 0
+	}
+
 	return (
 		<section className={'calculator-page'}>
 			<div className={'calculator-page__wrapper'}>
@@ -42,12 +51,12 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 					<CalculatorModes className={'buttons__wrapper'}>
 						<CalculatorModes.Item
 							className={'buttons__button'}
-							available={mode === Modes.runtime ? true : false}
+							available={getIsRuntimeMode()}
 							onClick={() => setRuntimeMode()}><SelectorIcon />Runtime</CalculatorModes.Item>
 
 						<CalculatorModes.Item
 							className={'buttons__button'}
-							available={mode === Modes.constructor ? true : false}
+							available={getIsConstructorMode()}
 							onClick={() => setConstructorMode()}><EyeIcon />Constructor</CalculatorModes.Item>
 					</CalculatorModes>
 				</div>
@@ -61,10 +70,10 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 							setDraggedElement={setDraggedElement}
 						/>
 					</div>
-					<div className={['calculator-page__calculator-runtime', 'calculator', 'runtime', constructorTempElements.length <= 0 && mode === Modes.constructor ? 'empty' : '', dragOver ? 'dragover' : ''].join(' ')}
+					<div className={['calculator-page__calculator-runtime', 'calculator', 'runtime', !getIsElementsInTempConstructor() && getIsConstructorMode() ? 'empty' : '', dragOver ? 'dragover' : ''].join(' ')}
 					>
 						{
-							mode === Modes.constructor && <ConstructorDraggableArea
+							getIsConstructorMode() && <ConstructorDraggableArea
 								constructorCalculator={constructorCalculator}
 								constructorTempCalculator={constructorTempCalculator}
 								dragOver={dragOver}
@@ -74,7 +83,7 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 							/>
 						}
 						{
-							constructorTempElements.length > 0 && mode === Modes.constructor &&
+							getIsElementsInTempConstructor() && getIsConstructorMode() &&
 							<ConstructorTempElements
 								draggedElement={draggedElement}
 								calculatorTemp={constructorTempCalculator}
@@ -83,13 +92,13 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 								setDraggedElement={setDraggedElement}
 							/>
 							||
-							mode === Modes.runtime &&
+							getIsRuntimeMode() &&
 							<RuntimeElements
 								mode={mode}
 								constructorTempCalculator={constructorTempCalculator}
 							/>
 							||
-							constructorTempElements.length === 0 && mode === Modes.constructor &&
+							!getIsElementsInTempConstructor() && getIsConstructorMode() &&
 							<div className={'runtime__block'}>
 								<AddIcon className={'runtime__icon'} />
 								<h4 className={'runtime__text'}>Перетащите сюда<span>любой элемент из левой панели</span></h4>

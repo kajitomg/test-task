@@ -92,9 +92,13 @@ const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> =
 			}
 		}
 	}
+	const getIsDraggedClass = (): string => {
+		return !draggable ? 'nodragged' : ''
+	}
+
 	return (
 		<div
-			className={['drag-element', !draggable ? 'nodragged' : ''].join(' ')}
+			className={['drag-element', getIsDraggedClass()].join(' ')}
 			onDragEnd={() => onDragEndHandler()}
 			onDragLeave={() => onDragLeaveHandler()}
 			onDragOver={(event) => onDragOverHandler(event)}
@@ -106,4 +110,4 @@ const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> =
 	)
 }
 
-export default ConstructorDraggableElementDisplay
+export { ConstructorDraggableElementDisplay }

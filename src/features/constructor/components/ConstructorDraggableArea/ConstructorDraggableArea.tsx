@@ -21,7 +21,7 @@ interface ConstructorDraggableAreaProps {
 }
 
 const ConstructorDraggableArea: FC<ConstructorDraggableAreaProps> = ({ dragOver, setDragOver, draggedElement, setDraggedElement, constructorCalculator, constructorTempCalculator }) => {
-	const { AddConstructorTempElement, DeleteConstructorTempElement } = useActions()
+	const { AddConstructorTempElement } = useActions()
 
 	const onDragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
@@ -65,16 +65,6 @@ const ConstructorDraggableArea: FC<ConstructorDraggableAreaProps> = ({ dragOver,
 	};
 
 	const onDragEndHandler = (event: React.DragEvent<HTMLDivElement>) => {
-		// if (!dragOver) {
-		// 	if (draggedElement) {
-		// 		DeleteConstructorTempElement(constructorTempCalculator, draggedElement)
-		// 		constructorCalculator.getElements().forEach((element) => {
-		// 			if (element.name === draggedElement.name) {
-		// 				element.setActive(true)
-		// 			}
-		// 		})
-		// 	}
-		// }
 		setDragOver(false)
 		setDraggedElement(null)
 

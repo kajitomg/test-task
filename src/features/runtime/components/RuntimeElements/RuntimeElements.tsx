@@ -19,7 +19,7 @@ interface RuntimeElementsProps {
 const RuntimeElements: FC<RuntimeElementsProps> = ({ mode, constructorTempCalculator }) => {
 	const [calculator, setCalculator] = useState<CalculatorRuntime>(new CalculatorRuntime())
 
-	const { runtimeElements, runtimeValue } = useTypedSelector(state => state.calculatorRuntime)
+	const { runtimeElements } = useTypedSelector(state => state.calculatorRuntime)
 
 	const { RenderRuntimeElement, RenderValue } = useActions()
 
@@ -31,7 +31,6 @@ const RuntimeElements: FC<RuntimeElementsProps> = ({ mode, constructorTempCalcul
 			RenderValue(calculator)
 		}
 	}, [mode])
-	console.log(calculator)
 
 	return (
 		<>

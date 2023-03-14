@@ -2,10 +2,9 @@ import React, { FC, useState } from 'react'
 import { CalculatorCase } from '../../../../shared/ui/CalculatorCase'
 import { CalculatorLine, Lines } from '../../../../shared/ui/CalculatorLine';
 import { CalculatorViewer } from '../../../../shared/ui/CalculatorViewer'
-import { Element, Positions } from '../../../calculators';
-import { useActions } from '../../../hooks';
+import { Element } from '../../../calculators';
 import { CalculatorConstructor, Modes } from '../../models';
-import ConstructorDraggableElementDisplay from '../ConstructorDraggableElementDisplay/ConstructorDraggableElementDisplay';
+import { ConstructorDraggableElementDisplay } from '../ConstructorDraggableElementDisplay';
 import './ConstructorDisplay.scss'
 
 interface ConstructorDisplayProps {
@@ -39,14 +38,22 @@ const ConstructorDisplay: FC<ConstructorDisplayProps> = ({ value, className, set
 
 	const fontsize = value.toLocaleString().length > 8 && 'smallfontsize'
 
+	const getIsDraggableElement = (): boolean => {
+		return isTemp ? false : draggable
+	}
+	const getIsShadowClass = () => {
+		return isTemp ? 'temp' : ''
+	}
+
+
 	return (
 		<CalculatorCase
-			className={['constructor-wrapper', className, isTemp ? 'temp' : ''].join(' ')}
+			className={['constructor-wrapper', className, getIsShadowClass()].join(' ')}
 		>
-			<CalculatorViewer className={['constructor-display', fontsize].join(' ')} draggable={isTemp ? false : draggable}>{value}</CalculatorViewer>
+			<CalculatorViewer className={['constructor-display', fontsize].join(' ')} draggable={getIsDraggableElement()}>{value}</CalculatorViewer>
 			{isTemp && <CalculatorLine line={line} />}
 			<ConstructorDraggableElementDisplay
-				draggable={isTemp ? false : draggable}
+				draggable={getIsDraggableElement()}
 				calculator={calculator}
 				calculatorTemp={calculatorTemp}
 				draggedElement={draggedElement}
