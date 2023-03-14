@@ -21,14 +21,17 @@ const RuntimeElements: FC<RuntimeElementsProps> = ({ mode, constructorTempCalcul
 
 	const { runtimeElements, runtimeValue } = useTypedSelector(state => state.calculatorRuntime)
 
-	const { RenderRuntimeElement } = useActions()
+	const { RenderRuntimeElement, RenderValue } = useActions()
 
 	useEffect(() => {
+		setCalculator(new CalculatorRuntime())
 		if (mode === Modes.runtime) {
 			calculator?.addElements(constructorTempCalculator.getElements())
 			RenderRuntimeElement(calculator)
+			RenderValue(calculator)
 		}
 	}, [mode])
+	console.log(calculator)
 
 	return (
 		<>

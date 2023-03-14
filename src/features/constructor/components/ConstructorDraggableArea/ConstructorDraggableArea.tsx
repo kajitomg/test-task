@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Element } from '../../../calculators';
+import { Element, ElementTypes, Positions } from '../../../calculators';
 import { useActions } from '../../../hooks';
 import { CalculatorConstructor } from '../../models';
 import './ConstructorDraggableArea.scss'
@@ -39,7 +39,18 @@ const ConstructorDraggableArea: FC<ConstructorDraggableAreaProps> = ({ dragOver,
 
 		if (dragOver) {
 			if (draggedElement) {
-				AddConstructorTempElement(constructorTempCalculator, draggedElement)
+				let isItElement = false
+				constructorTempCalculator.getElements().map((element) => {
+					if (element.name === draggedElement.name) {
+						isItElement = true
+					}
+				})
+				if (isItElement) {
+					return
+				}
+				if (!isItElement) {
+					AddConstructorTempElement(constructorTempCalculator, draggedElement, Positions.end)
+				}
 				constructorCalculator.getElements().forEach((element) => {
 					if (element.name === draggedElement.name) {
 						element.setActive(false)

@@ -38,7 +38,7 @@ const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, classN
 
 	return (
 		<CalculatorCase
-			className={['constructor-operators', className].join(' ')}
+			className={['constructor-operators', className, isTemp ? 'temp' : ''].join(' ')}
 		>
 			{operators.examples.map((example) =>
 				<CalculatorButton

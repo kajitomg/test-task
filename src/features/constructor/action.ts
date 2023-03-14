@@ -21,11 +21,11 @@ export const AddConstructorElement = (calculator: CalculatorConstructor, element
 	}
 }
 
-export const DeleteConstructorElement = (calculator: CalculatorConstructor, element: Element | null) => {
+export const DeleteConstructorElement = (calculator: CalculatorConstructor, element: Element | null, position?: Positions) => {
 	return (dispatch: Dispatch<CalculatorAction>) => {
 		try {
 			if (element) {
-				calculator.deleteElement(element)
+				calculator.deleteElement(element, position)
 				dispatch({
 					type: CalculatorActionTypes.REFRESH__CALCULATOR__CONSTRUCTOR__ELEMENT,
 					payload: calculator.getElements()
@@ -36,22 +36,6 @@ export const DeleteConstructorElement = (calculator: CalculatorConstructor, elem
 		}
 	}
 }
-
-// export const ShiftConstructorElement = (calculator: CalculatorConstructor, element: Element | null, position: Positions) => {
-// 	return (dispatch: Dispatch<CalculatorAction>) => {
-// 		try {
-// 			if (element) {
-// 				calculator.shiftElement(element, position)
-// 				dispatch({
-// 					type: CalculatorActionTypes.REFRESH__CALCULATOR__CONSTRUCTOR__ELEMENT,
-// 					payload: calculator.getElements()
-// 				})
-// 			}
-// 		} catch (error) {
-// 			console.log(error)
-// 		}
-// 	}
-// }
 export const AddConstructorTempElement = (calculator: CalculatorConstructor, element: Element | null, position?: Positions) => {
 	return (dispatch: Dispatch<CalculatorAction>) => {
 		try {
@@ -68,11 +52,11 @@ export const AddConstructorTempElement = (calculator: CalculatorConstructor, ele
 	}
 }
 
-export const DeleteConstructorTempElement = (calculator: CalculatorConstructor, element: Element | null) => {
+export const DeleteConstructorTempElement = (calculator: CalculatorConstructor, element: Element | null, position?: Positions) => {
 	return (dispatch: Dispatch<CalculatorAction>) => {
 		try {
 			if (element) {
-				calculator.deleteElement(element)
+				calculator.deleteElement(element, position)
 				dispatch({
 					type: CalculatorActionTypes.REFRESH__CALCULATOR__CONSTRUCTOR__TEMP__ELEMENT,
 					payload: calculator.getElements()
@@ -83,20 +67,4 @@ export const DeleteConstructorTempElement = (calculator: CalculatorConstructor, 
 		}
 	}
 }
-
-// export const ShiftConstructorTempElement = (calculator: CalculatorConstructor, element: Element | null, position: Positions) => {
-// 	return (dispatch: Dispatch<CalculatorAction>) => {
-// 		try {
-// 			if (element) {
-// 				calculator.shiftElement(element, position)
-// 				dispatch({
-// 					type: CalculatorActionTypes.REFRESH__CALCULATOR__CONSTRUCTOR__TEMP__ELEMENT,
-// 					payload: calculator.getElements()
-// 				})
-// 			}
-// 		} catch (error) {
-// 			console.log(error)
-// 		}
-// 	}
-// }
 

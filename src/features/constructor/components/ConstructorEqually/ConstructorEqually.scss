@@ -9,6 +9,9 @@
 	&.active{
 		opacity: 1;
 	}
+	&.temp{
+		box-shadow: none;
+	}
 }
 
 .constructor-equally{

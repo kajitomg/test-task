@@ -23,8 +23,6 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 	const [constructorCalculator, setConstructorCalculator] = useState(new CalculatorConstructor())
 	const [constructorTempCalculator, setConstructorTempCalculator] = useState(new CalculatorConstructor())
 
-	const { AddConstructorTempElement, DeleteConstructorTempElement } = useActions()
-
 	const [dragOver, setDragOver] = useState<boolean>(false)
 	const [draggedElement, setDraggedElement] = useState<Element | null>(null)
 
@@ -37,56 +35,6 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 	const setRuntimeMode = () => {
 		setMode(Modes.runtime)
 	}
-
-
-	// const onDragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
-	// 	event.preventDefault();
-	// 	setDragOver(true)
-	// };
-	// const onDragLeaveHandler = (event: React.DragEvent<HTMLDivElement>) => {
-
-	// 	setDragOver(false)
-
-	// };
-
-	// const onDropHandler = (event: React.DragEvent<HTMLDivElement>, constructorCalculator: CalculatorConstructor, constructorTempCalculator: CalculatorConstructor) => {
-
-	// 	event.preventDefault();
-
-	// 	if (dragOver) {
-	// 		if (draggedElement) {
-	// 			AddConstructorTempElement(constructorTempCalculator, draggedElement)
-	// 			constructorCalculator.getElements().forEach((element) => {
-	// 				if (element.name === draggedElement.name) {
-	// 					element.setActive(false)
-	// 				}
-	// 			})
-	// 		}
-	// 		setDragOver(false)
-	// 		setDraggedElement(null)
-	// 	}
-
-
-	// };
-
-	// const onDragEndHandler = (event: React.DragEvent<HTMLDivElement>) => {
-
-	// 	if (!dragOver) {
-	// 		if (draggedElement) {
-	// 			DeleteConstructorTempElement(constructorTempCalculator, draggedElement)
-	// 			constructorCalculator.getElements().forEach((element) => {
-	// 				if (element.name === draggedElement.name) {
-	// 					element.setActive(true)
-	// 				}
-	// 			})
-	// 		}
-	// 	}
-
-	// 	setDragOver(false)
-	// 	setDraggedElement(null)
-
-	// };
-
 	return (
 		<section className={'calculator-page'}>
 			<div className={'calculator-page__wrapper'}>
@@ -114,21 +62,17 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 						/>
 					</div>
 					<div className={['calculator-page__calculator-runtime', 'calculator', 'runtime', constructorTempElements.length <= 0 && mode === Modes.constructor ? 'empty' : '', dragOver ? 'dragover' : ''].join(' ')}
-					// onDragOver={(event) => onDragOverHandler(event)}
-					// onDrop={(event) => onDropHandler(event, constructorCalculator, constructorTempCalculator)}
-					// onDragLeave={(event) => onDragLeaveHandler(event)}
-					// onDragEnd={(event) => onDragEndHandler(event)}
-
 					>
-
-						<ConstructorDraggableArea
-							constructorCalculator={constructorCalculator}
-							constructorTempCalculator={constructorTempCalculator}
-							dragOver={dragOver}
-							draggedElement={draggedElement}
-							setDragOver={setDragOver}
-							setDraggedElement={setDraggedElement}
-						/>
+						{
+							mode === Modes.constructor && <ConstructorDraggableArea
+								constructorCalculator={constructorCalculator}
+								constructorTempCalculator={constructorTempCalculator}
+								dragOver={dragOver}
+								draggedElement={draggedElement}
+								setDragOver={setDragOver}
+								setDraggedElement={setDraggedElement}
+							/>
+						}
 						{
 							constructorTempElements.length > 0 && mode === Modes.constructor &&
 							<ConstructorTempElements

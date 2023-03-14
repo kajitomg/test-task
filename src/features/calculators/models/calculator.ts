@@ -9,6 +9,7 @@ export enum Positions {
 	second = 2,
 	third = 3,
 	fourth = 4,
+	end = 5,
 }
 
 export class Calculator {

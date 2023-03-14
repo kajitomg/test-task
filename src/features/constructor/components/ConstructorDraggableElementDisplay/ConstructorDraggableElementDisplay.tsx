@@ -30,6 +30,9 @@ const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> =
 			if (draggedElement.name === ElementTypes.Display) {
 				return
 			}
+			if (getMousePositionOnElement(event) <= getElementHeight(event) / 2) {
+				setLine(Lines.none)
+			}
 			if (getMousePositionOnElement(event) >= getElementHeight(event) / 2) {
 				setLine(Lines.after)
 			}
@@ -51,16 +54,17 @@ const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> =
 		setLine(Lines.none)
 
 	};
-
 	const onDropHandler = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
 		if (element.name === draggedElement?.name) {
+			setDragElement(null)
+			setLine(Lines.none)
 			return
 		}
 		if (isTemp) {
 			if (getMousePositionOnElement(event) >= getElementHeight(event) / 2) {
 				calculator.getElements().forEach((e) => {
-					if (e.name === element.name) {
+					if (e.name === draggedElement?.name) {
 						e.setActive(false)
 					}
 				})
@@ -77,13 +81,15 @@ const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> =
 
 	};
 	const onDoubleClickHandler = () => {
-		if (!isTemp) {
-			calculator.getElements().forEach((e) => {
-				if (e.name === element.name) {
-					e.setActive(false)
-				}
-			})
-			AddConstructorTempElement(calculatorTemp, element)
+		if (draggable) {
+			if (!isTemp) {
+				calculator.getElements().forEach((e) => {
+					if (e.name === element.name) {
+						e.setActive(false)
+					}
+				})
+				AddConstructorTempElement(calculatorTemp, element, Positions.end)
+			}
 		}
 	}
 	return (

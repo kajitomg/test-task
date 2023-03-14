@@ -39,7 +39,7 @@ const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, s
 
 	return (
 		<CalculatorCase
-			className={['constructor-numbers', className].join(' ')}
+			className={['constructor-numbers', className, isTemp ? 'temp' : ''].join(' ')}
 		>
 			{numbers.examples.map((example) =>
 				<CalculatorButton

@@ -1,7 +1,7 @@
 import { Calculator, NumberTypes, OperatorTypes, Positions } from "../../calculators";
 
 export class CalculatorRuntime extends Calculator {
-	private value: string = '';
+	private value: string = '0';
 	private previewValue: string = '';
 	private operation: OperatorTypes | null = null;
 
@@ -10,6 +10,8 @@ export class CalculatorRuntime extends Calculator {
 	}
 
 	public addSymbol(value: string) {
+		this.isNan()
+		this.isZero(value)
 		if (this.checkSplitter(this.value) && this.isSplitter(value)) {
 			return
 		}
@@ -24,6 +26,11 @@ export class CalculatorRuntime extends Calculator {
 	public setValue(value: string) {
 		this.getDisplay()?.setValue(value)
 		this.value = value
+	}
+	private isZero(value: string) {
+		if (this.getValue() === '0' && value !== ',') {
+			this.setValue('')
+		}
 	}
 	public getValue() {
 		return this.value
@@ -49,6 +56,13 @@ export class CalculatorRuntime extends Calculator {
 		}
 		return false
 	}
+	private isNan() {
+		if (isNaN(this.makeNumber(this.getPreviewValue())) || isNaN(this.makeNumber(this.getValue()))) {
+			this.setValue('')
+			this.setPreviewValue('')
+			this.operation = null
+		}
+	}
 
 	private makeNumber(string: string): number {
 		let tempvalue = ''
@@ -64,6 +78,9 @@ export class CalculatorRuntime extends Calculator {
 	}
 
 	private makeString(number: number): string {
+		if (number === Infinity) {
+			return 'Не определено'
+		}
 		let tempvalue = ''
 		let string = (number).toString()
 		for (var i = 0; i < string.length; i++) {
@@ -84,33 +101,38 @@ export class CalculatorRuntime extends Calculator {
 	}
 
 	public MakeOperation(): void {
+		this.isNan()
 		const firstMember = this.makeNumber(this.previewValue)
 		const secondMember = this.makeNumber(this.value)
 
-		if (!firstMember) {
+		if (!this.previewValue) {
 			this.setPreviewValue(this.value)
 			return this.setValue('')
 		}
-		if (!secondMember) {
+		if (!this.value) {
 			this.setPreviewValue(this.previewValue)
 			return this.setValue('')
 		}
 
-		if (firstMember && secondMember) {
+		if (this.previewValue && this.value) {
 			if (this.operation === OperatorTypes.division) {
 				this.setPreviewValue(this.makeString(firstMember / secondMember))
+				this.operation = null
 				return this.setValue('')
 			}
 			if (this.operation === OperatorTypes.multiplication) {
 				this.setPreviewValue(this.makeString(firstMember * secondMember))
+				this.operation = null
 				return this.setValue('')
 			}
 			if (this.operation === OperatorTypes.addition) {
 				this.setPreviewValue(this.makeString(firstMember + secondMember))
+				this.operation = null
 				return this.setValue('')
 			}
 			if (this.operation === OperatorTypes.subtraction) {
 				this.setPreviewValue(this.makeString(firstMember - secondMember))
+				this.operation = null
 				return this.setValue('')
 			}
 		}

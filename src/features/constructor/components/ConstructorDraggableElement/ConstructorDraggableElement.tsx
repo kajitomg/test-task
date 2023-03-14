@@ -46,13 +46,19 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 		event.preventDefault();
 		if (draggedElement) {
 			if (getMousePositionOnElement(event) <= getElementHeight(event) / 2) {
-				setLine(Lines.before)
+				if (draggedElement.name === ElementTypes.Display) {
+					if (element.getPosition() === Positions.first) {
+						return setLine(Lines.before)
+					}
+					return
+				}
+				return setLine(Lines.before)
 			}
 			if (getMousePositionOnElement(event) >= getElementHeight(event) / 2) {
 				if (draggedElement.name === ElementTypes.Display) {
 					return
 				}
-				setLine(Lines.after)
+				return setLine(Lines.after)
 			}
 
 		}
@@ -74,20 +80,27 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 	const onDropHandler = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
 		if (element.name === draggedElement?.name) {
+			setDragElement(null)
+			setLine(Lines.none)
 			return
 		}
 		if (isTemp) {
 			if (getMousePositionOnElement(event) <= getElementHeight(event) / 2) {
 				calculator.getElements().forEach((e) => {
-					if (e.name === element.name) {
+					if (e.name === draggedElement?.name) {
 						e.setActive(false)
+					}
+				})
+				calculatorTemp.getElements().forEach((e) => {
+					if (e.name === draggedElement?.name) {
+						AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition())
 					}
 				})
 				AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition())
 			}
 			if (getMousePositionOnElement(event) >= getElementHeight(event) / 2) {
 				calculator.getElements().forEach((e) => {
-					if (e.name === element.name) {
+					if (e.name === draggedElement?.name) {
 						e.setActive(false)
 					}
 				})
@@ -104,21 +117,23 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 
 	};
 	const onDoubleClickHandler = () => {
-		if (isTemp) {
-			DeleteConstructorTempElement(calculatorTemp, element)
-			calculator.getElements().forEach((e) => {
-				if (e.name === element.name) {
-					e.setActive(true)
-				}
-			})
-		}
-		if (!isTemp) {
-			calculator.getElements().forEach((e) => {
-				if (e.name === element.name) {
-					e.setActive(false)
-				}
-			})
-			AddConstructorTempElement(calculatorTemp, element)
+		if (draggable) {
+			if (isTemp) {
+				DeleteConstructorTempElement(calculatorTemp, element)
+				calculator.getElements().forEach((e) => {
+					if (e.name === element.name) {
+						e.setActive(true)
+					}
+				})
+			}
+			if (!isTemp) {
+				calculator.getElements().forEach((e) => {
+					if (e.name === element.name) {
+						e.setActive(false)
+					}
+				})
+				AddConstructorTempElement(calculatorTemp, element, Positions.end)
+			}
 		}
 	}
 	return (

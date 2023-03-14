@@ -40,7 +40,7 @@ const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, set
 
 	return (
 		<CalculatorCase
-			className={['constructor-wrapper', className].join(' ')}
+			className={['constructor-wrapper', className, isTemp ? 'temp' : ''].join(' ')}
 		>
 			<CalculatorButton.Blue className={'constructor-equally'} draggable={draggable}>{value}</CalculatorButton.Blue>
 			{isTemp && <CalculatorLine line={line} />}

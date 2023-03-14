@@ -41,7 +41,7 @@ const ConstructorDisplay: FC<ConstructorDisplayProps> = ({ value, className, set
 
 	return (
 		<CalculatorCase
-			className={['constructor-wrapper', className].join(' ')}
+			className={['constructor-wrapper', className, isTemp ? 'temp' : ''].join(' ')}
 		>
 			<CalculatorViewer className={['constructor-display', fontsize].join(' ')} draggable={isTemp ? false : draggable}>{value}</CalculatorViewer>
 			{isTemp && <CalculatorLine line={line} />}
