@@ -1,0 +1,84 @@
+import React, { FC } from 'react'
+import { Element } from '../../../calculators';
+import { useActions } from '../../../hooks';
+import { CalculatorConstructor } from '../../models';
+import './ConstructorDraggableArea.scss'
+
+interface ConstructorDraggableAreaProps {
+
+	dragOver: boolean;
+
+	setDragOver: (boolean: boolean) => void;
+
+	draggedElement: Element | null;
+
+	setDraggedElement: (element: Element | null) => void;
+
+	constructorCalculator: CalculatorConstructor;
+
+	constructorTempCalculator: CalculatorConstructor;
+
+}
+
+const ConstructorDraggableArea: FC<ConstructorDraggableAreaProps> = ({ dragOver, setDragOver, draggedElement, setDraggedElement, constructorCalculator, constructorTempCalculator }) => {
+	const { AddConstructorTempElement, DeleteConstructorTempElement } = useActions()
+
+	const onDragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
+		event.preventDefault();
+		setDragOver(true)
+	};
+	const onDragLeaveHandler = (event: React.DragEvent<HTMLDivElement>) => {
+
+		setDragOver(false)
+
+	};
+
+	const onDropHandler = (event: React.DragEvent<HTMLDivElement>, constructorCalculator: CalculatorConstructor, constructorTempCalculator: CalculatorConstructor) => {
+
+		event.preventDefault();
+
+		if (dragOver) {
+			if (draggedElement) {
+				AddConstructorTempElement(constructorTempCalculator, draggedElement)
+				constructorCalculator.getElements().forEach((element) => {
+					if (element.name === draggedElement.name) {
+						element.setActive(false)
+					}
+				})
+			}
+			setDragOver(false)
+			setDraggedElement(null)
+		}
+
+
+	};
+
+	const onDragEndHandler = (event: React.DragEvent<HTMLDivElement>) => {
+		// if (!dragOver) {
+		// 	if (draggedElement) {
+		// 		DeleteConstructorTempElement(constructorTempCalculator, draggedElement)
+		// 		constructorCalculator.getElements().forEach((element) => {
+		// 			if (element.name === draggedElement.name) {
+		// 				element.setActive(true)
+		// 			}
+		// 		})
+		// 	}
+		// }
+		setDragOver(false)
+		setDraggedElement(null)
+
+	};
+
+	return (
+		<div
+			className={'drag-area'}
+			onDragOver={(event) => onDragOverHandler(event)}
+			onDrop={(event) => onDropHandler(event, constructorCalculator, constructorTempCalculator)}
+			onDragLeave={(event) => onDragLeaveHandler(event)}
+			onDragEnd={(event) => onDragEndHandler(event)}
+			draggable={true}
+		></div>
+	)
+}
+
+export { ConstructorDraggableArea }

@@ -29,7 +29,7 @@
 
 	}
 	&__calculator-runtime{
-
+		position: relative;
 		&.empty{
 			border: 2px dashed var(--clr-border-block);
 		}

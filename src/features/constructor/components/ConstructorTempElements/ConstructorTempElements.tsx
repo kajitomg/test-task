@@ -31,11 +31,11 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 			{constructorTempElements?.map((element) =>
 
 				element.name === ElementTypes.Display && <ConstructorDisplay
-					temp={true}
+					isTemp={true}
 					key={element.name}
 					calculator={calculator}
 					calculatorTemp={calculatorTemp}
-					draggable={mode === Modes.constructor}
+					draggable={false}
 					mode={mode}
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
@@ -45,7 +45,7 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 				/> ||
 
 				element.name === ElementTypes.Operators && <ConstructorOperators
-					temp={true}
+					isTemp={true}
 					operators={calculator.getOperators()}
 					key={element.name}
 					calculator={calculator}
@@ -59,7 +59,7 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 				/> ||
 
 				element.name === ElementTypes.Numbers && <ConstructorNumbers
-					temp={true}
+					isTemp={true}
 					numbers={calculator.getNumbers()}
 					key={element.name}
 					calculator={calculator}
@@ -73,7 +73,7 @@ const ConstructorTempElements: FC<ConstructorTempElementsProps> = ({ mode, setDr
 				/> ||
 
 				element.name === ElementTypes.Equally && <ConstructorEqually
-					temp={true}
+					isTemp={true}
 					value={calculator.getEqually()?.getValue()}
 					key={element.name}
 					calculator={calculator}

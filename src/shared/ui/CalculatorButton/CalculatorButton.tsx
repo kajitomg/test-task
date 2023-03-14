@@ -9,11 +9,13 @@ export interface CalculatorButtonProps {
 
 	onClick?: () => void;
 
+	draggable?: boolean;
+
 }
 
 const CalculatorButton = ({ children, className, onClick }: CalculatorButtonProps) => {
 	return (
-		<button className={['calculator__button', className].join(' ')} onClick={onClick} >{children}</button>
+		<button className={['calculator__button', className].join(' ')} onClick={onClick}>{children}</button>
 	)
 }
 

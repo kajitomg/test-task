@@ -9,12 +9,14 @@ interface CalculatorViewerProps {
 
 	active?: boolean;
 
+	draggable?: boolean;
+
 }
 
-const CalculatorViewer: FC<CalculatorViewerProps> = ({ children, className, active }) => {
+const CalculatorViewer: FC<CalculatorViewerProps> = ({ children, className, active, draggable }) => {
 
 	return (
-		<div className={['calculator__viewer', className, active ? 'active' : ''].join(' ')}>{children}</div>
+		<div className={['calculator__viewer', className, active ? 'active' : ''].join(' ')} draggable={draggable}>{children}</div>
 	)
 }
 

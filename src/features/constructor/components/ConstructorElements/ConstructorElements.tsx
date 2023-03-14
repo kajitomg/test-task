@@ -45,9 +45,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 		AddConstructorElement(calculator, calculator.getNumbers())
 	}, [])
 
-	const onDoubleClickHandler = () => {
 
-	}
 
 	return (
 		<>
