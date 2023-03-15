@@ -23,8 +23,6 @@ const RuntimeElements: FC<RuntimeElementsProps> = ({ mode, constructorTempCalcul
 
 	const { RenderRuntimeElement, RenderValue } = useActions()
 
-	console.log(calculator)
-
 	useEffect(() => {
 		setCalculator(new CalculatorRuntime())
 		if (mode === Modes.runtime) {
