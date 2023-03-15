@@ -12,6 +12,9 @@ export class CalculatorRuntime extends Calculator {
 	public addSymbol(value: string) {
 		this.isNan()
 		this.isZero(value)
+		if (!this.operation && this.getPreviewValue() && !this.getValue()) {
+			this.setPreviewValue('')
+		}
 		if (this.checkSplitter(this.value) && this.isSplitter(value)) {
 			return
 		}
@@ -140,7 +143,7 @@ export class CalculatorRuntime extends Calculator {
 	}
 
 	private makeString(number: number): string {
-		if (number === Infinity) {
+		if (number === Infinity || isNaN(number)) {
 			return 'Не определено'
 		}
 		let tempvalue = ''
