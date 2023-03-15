@@ -19,8 +19,8 @@ interface ConstructorCalculatorProps {
 const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 	const { constructorTempElements } = useTypedSelector(state => state.calculatorConstructor)
 
-	const [constructorCalculator, setConstructorCalculator] = useState(new CalculatorConstructor())
-	const [constructorTempCalculator, setConstructorTempCalculator] = useState(new CalculatorConstructor())
+	const [constructorCalculator] = useState(new CalculatorConstructor())
+	const [constructorTempCalculator] = useState(new CalculatorConstructor())
 
 	const [dragOver, setDragOver] = useState<boolean>(false)
 	const [draggedElement, setDraggedElement] = useState<Element | null>(null)
