@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Lines } from '../../../../shared/ui/CalculatorLine';
+import { CalculatorLine, Lines } from '../../../../shared/ui/CalculatorLine';
 import { Element, ElementTypes, Positions } from '../../../calculators';
 import { useActions } from '../../../hooks';
 import { CalculatorConstructor } from '../../models';
@@ -30,15 +30,23 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 	const { DeleteConstructorTempElement, AddConstructorTempElement } = useActions()
 
 	const getMousePositionOnElement = (event: any) => {
-		const element = event.target.getBoundingClientRect();
-
+		let element = event.target.getBoundingClientRect();
+		event.target.className.split(' ').map((className: any) => {
+			if (className === 'calculator__button') {
+				element = event.target.offsetParent.getBoundingClientRect()
+			}
+		})
 		const mousePosition = event.clientY
 
 		return mousePosition - element.top
 	}
 	const getElementHeight = (event: any) => {
-		const element = event.target.getBoundingClientRect();
-
+		let element = event.target.getBoundingClientRect();
+		event.target.className.split(' ').map((className: any) => {
+			if (className === 'calculator__button') {
+				element = event.target.offsetParent.getBoundingClientRect()
+			}
+		})
 		return element.height
 	}
 
@@ -47,6 +55,16 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 		if (draggedElement) {
 			if (getMousePositionOnElement(event) <= getElementHeight(event) / 2) {
 				if (draggedElement.name === ElementTypes.Display) {
+					// let elem = event.target.offsetParent.firstChild.firstChild
+					// event.target.className.split(' ').map((className: any) => {
+					// 	if (className === 'calculator__button') {
+					// 		elem = event.target.offsetParent.offsetParent.firstChild.firstChild
+					// 	}
+					// })
+					// if (elem.lastElementChild.className === 'line before-line') {
+					// 	elem.removeChild(<CalculatorLine line={Lines.before} />);
+					// }
+					// return elem.append(<CalculatorLine line={Lines.before} />);пше
 					if (element.getPosition() === Positions.first) {
 						return setLine(Lines.before)
 					}
