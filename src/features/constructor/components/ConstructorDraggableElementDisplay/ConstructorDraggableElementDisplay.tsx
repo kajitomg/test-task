@@ -4,9 +4,10 @@ import { Element, ElementTypes, Positions } from '../../../calculators';
 import { useActions } from '../../../hooks';
 import { ConstructorDraggableElementProps } from '../ConstructorDraggableElement/ConstructorDraggableElement';
 import '../ConstructorDraggableElement/ConstructorDraggableElement.scss'
+import NoDraggedArea from '../NoDraggableArea/NoDraggedArea';
 
 
-const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> = ({ draggable, setLine, setDragElement, element, draggedElement, calculator, calculatorTemp, isTemp }) => {
+const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> = ({ draggable, setLine, setDragElement, element, draggedElement, calculator, calculatorTemp, isTemp, children }) => {
 
 
 	const { AddConstructorTempElement } = useActions()
@@ -76,6 +77,7 @@ const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> =
 				}
 			}
 		}
+
 		setDragElement(null)
 		setLine(Lines.none)
 
@@ -92,21 +94,24 @@ const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> =
 			}
 		}
 	}
-	const getIsDraggedClass = (): string => {
-		return !draggable ? 'nodragged' : ''
-	}
+	// const getIsDraggedClass = (): string => {
+	// 	return !draggable ? 'nodragged' : ''
+	// }
 
 	return (
 		<div
-			className={['drag-element', getIsDraggedClass()].join(' ')}
+			className={'drag-element'}
 			onDragEnd={() => onDragEndHandler()}
 			onDragLeave={() => onDragLeaveHandler()}
 			onDragOver={(event) => onDragOverHandler(event)}
 			onDragStart={() => onDragStartHandler()}
 			onDrop={(event) => onDropHandler(event)}
 			onDoubleClick={() => onDoubleClickHandler()}
-			draggable={true}
-		></div>
+			draggable={draggable}
+		>
+			{!draggable && <NoDraggedArea />}
+			{children}
+		</div>
 	)
 }
 

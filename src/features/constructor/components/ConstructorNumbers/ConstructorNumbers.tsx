@@ -44,27 +44,28 @@ const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, s
 	}
 
 	return (
-		<CalculatorCase
-			className={['constructor-numbers', className, getIsShadowClass()].join(' ')}
+		<ConstructorDraggableElement
+			draggable={draggable}
+			calculator={calculator}
+			calculatorTemp={calculatorTemp}
+			draggedElement={draggedElement}
+			element={element}
+			isTemp={isTemp}
+			setDragElement={setDragElement}
+			setLine={setLine}
 		>
-			{numbers.examples.map((example) =>
-				<CalculatorButton
-					key={example.getValue()}
-					className={['constructor-number', getBigButtonClass(example)].join(' ')}
-				>{example.getValue()}</CalculatorButton>
-			)}
-			{isTemp && <CalculatorLine line={line} />}
-			<ConstructorDraggableElement
-				draggable={draggable}
-				calculator={calculator}
-				calculatorTemp={calculatorTemp}
-				draggedElement={draggedElement}
-				element={element}
-				isTemp={isTemp}
-				setDragElement={setDragElement}
-				setLine={setLine}
-			/>
-		</CalculatorCase>
+			<CalculatorCase
+				className={['constructor-numbers', className, getIsShadowClass()].join(' ')}
+			>
+				{numbers.examples.map((example) =>
+					<CalculatorButton
+						key={example.getValue()}
+						className={['constructor-number', getBigButtonClass(example)].join(' ')}
+					>{example.getValue()}</CalculatorButton>
+				)}
+				{isTemp && <CalculatorLine line={line} />}
+			</CalculatorCase>
+		</ConstructorDraggableElement>
 	)
 }
 

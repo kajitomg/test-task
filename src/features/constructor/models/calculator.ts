@@ -58,7 +58,18 @@ export class CalculatorConstructor extends Calculator {
 	private shiftElement(element: Element, position: Positions) {
 		let isItElement = false
 		if (element.name === ElementTypes.Display) {
-			return this.unshiftElement(element)
+			let isDisplayElementInElements = false
+			this.getElements().map((elem) => {
+				if (elem.name === ElementTypes.Display) {
+					return isDisplayElementInElements = true
+				}
+			})
+			if (isDisplayElementInElements) {
+				return
+			}
+			if (!isDisplayElementInElements) {
+				return this.unshiftElement(element)
+			}
 		}
 		this.getElements().forEach((thisElement) => {
 			if (thisElement.name === element.name) {

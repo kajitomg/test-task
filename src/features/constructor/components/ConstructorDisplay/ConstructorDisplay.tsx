@@ -47,22 +47,23 @@ const ConstructorDisplay: FC<ConstructorDisplayProps> = ({ value, className, set
 
 
 	return (
-		<CalculatorCase
-			className={['constructor-wrapper', className, getIsShadowClass()].join(' ')}
+		<ConstructorDraggableElementDisplay
+			draggable={getIsDraggableElement()}
+			calculator={calculator}
+			calculatorTemp={calculatorTemp}
+			draggedElement={draggedElement}
+			element={element}
+			isTemp={isTemp}
+			setDragElement={setDragElement}
+			setLine={setLine}
 		>
-			<CalculatorViewer className={['constructor-display', fontsize].join(' ')} draggable={getIsDraggableElement()}>{value}</CalculatorViewer>
-			{isTemp && <CalculatorLine line={line} />}
-			<ConstructorDraggableElementDisplay
-				draggable={getIsDraggableElement()}
-				calculator={calculator}
-				calculatorTemp={calculatorTemp}
-				draggedElement={draggedElement}
-				element={element}
-				isTemp={isTemp}
-				setDragElement={setDragElement}
-				setLine={setLine}
-			/>
-		</CalculatorCase>
+			<CalculatorCase
+				className={['constructor-wrapper', className, getIsShadowClass()].join(' ')}
+			>
+				<CalculatorViewer className={['constructor-display', fontsize].join(' ')} draggable={getIsDraggableElement()}>{value}</CalculatorViewer>
+				{isTemp && <CalculatorLine line={line} />}
+			</CalculatorCase>
+		</ConstructorDraggableElementDisplay>
 	)
 }
 

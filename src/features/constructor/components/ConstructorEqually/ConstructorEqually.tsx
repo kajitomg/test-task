@@ -42,22 +42,23 @@ const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, set
 	}
 
 	return (
-		<CalculatorCase
-			className={['constructor-wrapper', className, getIsShadowClass()].join(' ')}
+		<ConstructorDraggableElement
+			draggable={draggable}
+			calculator={calculator}
+			calculatorTemp={calculatorTemp}
+			draggedElement={draggedElement}
+			element={element}
+			isTemp={isTemp}
+			setDragElement={setDragElement}
+			setLine={setLine}
 		>
-			<CalculatorButton.Blue className={'constructor-equally'} draggable={draggable}>{value}</CalculatorButton.Blue>
-			{isTemp && <CalculatorLine line={line} />}
-			<ConstructorDraggableElement
-				draggable={draggable}
-				calculator={calculator}
-				calculatorTemp={calculatorTemp}
-				draggedElement={draggedElement}
-				element={element}
-				isTemp={isTemp}
-				setDragElement={setDragElement}
-				setLine={setLine}
-			/>
-		</CalculatorCase>
+			<CalculatorCase
+				className={['constructor-wrapper', className, getIsShadowClass()].join(' ')}
+			>
+				<CalculatorButton.Blue className={'constructor-equally'} draggable={draggable}>{value}</CalculatorButton.Blue>
+				{isTemp && <CalculatorLine line={line} />}
+			</CalculatorCase>
+		</ConstructorDraggableElement>
 	)
 }
 

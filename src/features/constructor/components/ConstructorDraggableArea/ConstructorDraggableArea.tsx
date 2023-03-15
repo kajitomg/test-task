@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Element, ElementTypes, Positions } from '../../../calculators';
 import { useActions } from '../../../hooks';
 import { CalculatorConstructor } from '../../models';
+import NoDraggedArea from '../NoDraggableArea/NoDraggedArea';
 import './ConstructorDraggableArea.scss'
 
 interface ConstructorDraggableAreaProps {
@@ -18,9 +19,13 @@ interface ConstructorDraggableAreaProps {
 
 	constructorTempCalculator: CalculatorConstructor;
 
+	children: React.ReactNode;
+
+	draggable: boolean;
+
 }
 
-const ConstructorDraggableArea: FC<ConstructorDraggableAreaProps> = ({ dragOver, setDragOver, draggedElement, setDraggedElement, constructorCalculator, constructorTempCalculator }) => {
+const ConstructorDraggableArea: FC<ConstructorDraggableAreaProps> = ({ dragOver, setDragOver, draggedElement, setDraggedElement, constructorCalculator, constructorTempCalculator, children, draggable }) => {
 	const { AddConstructorTempElement } = useActions()
 
 	const onDragOverHandler = (event: React.DragEvent<HTMLDivElement>) => {
@@ -77,8 +82,11 @@ const ConstructorDraggableArea: FC<ConstructorDraggableAreaProps> = ({ dragOver,
 			onDrop={(event) => onDropHandler(event, constructorCalculator, constructorTempCalculator)}
 			onDragLeave={(event) => onDragLeaveHandler(event)}
 			onDragEnd={(event) => onDragEndHandler(event)}
-			draggable={true}
-		></div>
+			draggable={draggable}
+		>
+			{!draggable && <NoDraggedArea />}
+			{children}
+		</div>
 	)
 }
 

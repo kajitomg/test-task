@@ -60,7 +60,7 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 							onClick={() => setConstructorMode()}><EyeIcon />Constructor</CalculatorModes.Item>
 					</CalculatorModes>
 				</div>
-				<div className={'calculator-page__calculators'}>
+				<div className={'calculator-page__calculators'} draggable={false}>
 					<div className={'calculator-page__calculator-constructor calculator'}>
 						<ConstructorElements
 							draggedElement={draggedElement}
@@ -70,41 +70,50 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 							setDraggedElement={setDraggedElement}
 						/>
 					</div>
-					<div className={['calculator-page__calculator-runtime', 'calculator', 'runtime', !getIsElementsInTempConstructor() && getIsConstructorMode() ? 'empty' : '', dragOver ? 'dragover' : ''].join(' ')}
-					>
-						{
-							getIsConstructorMode() && <ConstructorDraggableArea
-								constructorCalculator={constructorCalculator}
-								constructorTempCalculator={constructorTempCalculator}
-								dragOver={dragOver}
-								draggedElement={draggedElement}
-								setDragOver={setDragOver}
-								setDraggedElement={setDraggedElement}
-							/>
-						}
-						{
-							getIsElementsInTempConstructor() && getIsConstructorMode() &&
-							<ConstructorTempElements
-								draggedElement={draggedElement}
-								calculatorTemp={constructorTempCalculator}
-								calculator={constructorCalculator}
-								mode={mode}
-								setDraggedElement={setDraggedElement}
-							/>
-							||
-							getIsRuntimeMode() &&
+					{
+						getIsConstructorMode() && <ConstructorDraggableArea
+							constructorCalculator={constructorCalculator}
+							constructorTempCalculator={constructorTempCalculator}
+							dragOver={dragOver}
+							draggedElement={draggedElement}
+							setDragOver={setDragOver}
+							setDraggedElement={setDraggedElement}
+							draggable={!getIsElementsInTempConstructor()}
+						>
+							<div
+								className={['calculator-page__calculator-runtime', 'calculator', 'runtime', !getIsElementsInTempConstructor() ? 'empty' : '', dragOver ? 'dragover' : ''].join(' ')}
+								draggable={false}
+							>
+								{
+									getIsElementsInTempConstructor() &&
+									<ConstructorTempElements
+										draggedElement={draggedElement}
+										calculatorTemp={constructorTempCalculator}
+										calculator={constructorCalculator}
+										mode={mode}
+										setDraggedElement={setDraggedElement}
+									/>
+									||
+									!getIsElementsInTempConstructor() &&
+									<div className={'runtime__block'}>
+										<AddIcon className={'runtime__icon'} />
+										<h4 className={'runtime__text'}>Перетащите сюда<span>любой элемент из левой панели</span></h4>
+									</div>
+								}
+							</div>
+						</ConstructorDraggableArea>
+					}
+					{
+						getIsRuntimeMode() &&
+						<div className={['calculator-page__calculator-runtime', 'calculator', 'runtime'].join(' ')}
+						>
 							<RuntimeElements
 								mode={mode}
 								constructorTempCalculator={constructorTempCalculator}
 							/>
-							||
-							!getIsElementsInTempConstructor() && getIsConstructorMode() &&
-							<div className={'runtime__block'}>
-								<AddIcon className={'runtime__icon'} />
-								<h4 className={'runtime__text'}>Перетащите сюда<span>любой элемент из левой панели</span></h4>
-							</div>
-						}
-					</div>
+						</div>
+					}
+
 				</div>
 			</div>
 		</section>

@@ -40,28 +40,29 @@ const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, classN
 	}
 
 	return (
-		<CalculatorCase
-			className={['constructor-operators', className, getIsShadowClass()].join(' ')}
+		<ConstructorDraggableElement
+			draggable={draggable}
+			calculator={calculator}
+			calculatorTemp={calculatorTemp}
+			draggedElement={draggedElement}
+			element={element}
+			isTemp={isTemp}
+			setDragElement={setDragElement}
+			setLine={setLine}
 		>
-			{operators.examples.map((example) =>
-				<CalculatorButton
-					key={example.getValue()}
-					className={['constructor-operator'].join(' ')}
+			<CalculatorCase
+				className={['constructor-operators', className, getIsShadowClass()].join(' ')}
+			>
+				{operators.examples.map((example) =>
+					<CalculatorButton
+						key={example.getValue()}
+						className={['constructor-operator'].join(' ')}
 
-				>{example.getValue()}</CalculatorButton>
-			)}
-			{isTemp && <CalculatorLine line={line} />}
-			<ConstructorDraggableElement
-				draggable={draggable}
-				calculator={calculator}
-				calculatorTemp={calculatorTemp}
-				draggedElement={draggedElement}
-				element={element}
-				isTemp={isTemp}
-				setDragElement={setDragElement}
-				setLine={setLine}
-			/>
-		</CalculatorCase>
+					>{example.getValue()}</CalculatorButton>
+				)}
+				{isTemp && <CalculatorLine line={line} />}
+			</CalculatorCase>
+		</ConstructorDraggableElement>
 	)
 }
 

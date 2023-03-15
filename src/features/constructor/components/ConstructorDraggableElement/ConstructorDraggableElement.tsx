@@ -3,6 +3,7 @@ import { CalculatorLine, Lines } from '../../../../shared/ui/CalculatorLine';
 import { Element, ElementTypes, Positions } from '../../../calculators';
 import { useActions } from '../../../hooks';
 import { CalculatorConstructor } from '../../models';
+import NoDraggedArea from '../NoDraggableArea/NoDraggedArea';
 import './ConstructorDraggableElement.scss'
 
 export interface ConstructorDraggableElementProps {
@@ -23,9 +24,11 @@ export interface ConstructorDraggableElementProps {
 
 	isTemp: boolean;
 
+	children: React.ReactNode;
+
 }
 
-const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ draggable, setLine, setDragElement, element, draggedElement, calculator, calculatorTemp, isTemp }) => {
+const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ draggable, setLine, setDragElement, element, draggedElement, calculator, calculatorTemp, isTemp, children }) => {
 
 	const { DeleteConstructorTempElement, AddConstructorTempElement } = useActions()
 
@@ -104,6 +107,11 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 		}
 		if (isTemp) {
 			if (getMousePositionOnElement(event) <= getElementHeight(event) / 2) {
+				if (draggedElement?.getPosition() === element.getPosition() - 1) {
+					setDragElement(null)
+					return setLine(Lines.none)
+
+				}
 				calculator.getElements().forEach((e) => {
 					if (e.name === draggedElement?.name) {
 						e.setActive(false)
@@ -149,20 +157,23 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 			}
 		}
 	}
-	const getIsDraggedClass = (): string => {
-		return !draggable ? 'nodragged' : ''
-	}
+	// const getIsDraggedClass = (): string => {
+	// 	return !draggable ? 'nodragged' : ''
+	// }
 	return (
 		<div
-			className={['drag-element', getIsDraggedClass()].join(' ')}
+			className={'drag-element'}
 			onDragEnd={() => onDragEndHandler()}
 			onDragLeave={() => onDragLeaveHandler()}
 			onDragOver={(event) => onDragOverHandler(event)}
 			onDragStart={() => onDragStartHandler()}
 			onDrop={(event) => onDropHandler(event)}
 			onDoubleClick={() => onDoubleClickHandler()}
-			draggable={true}
-		></div>
+			draggable={draggable}
+		>
+			{!draggable && <NoDraggedArea />}
+			{children}
+		</div>
 	)
 }
 
