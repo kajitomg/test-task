@@ -35,7 +35,7 @@ const RuntimeElements: FC<RuntimeElementsProps> = ({ mode, constructorTempCalcul
 	return (
 		<>
 			{
-				runtimeElements.length > 0 && calculator &&
+				runtimeElements.length > 0 &&
 				runtimeElements.map((element) =>
 					element.name === ElementTypes.Display && <RuntimeDisplay key={element.name} /> ||
 					element.name === ElementTypes.Operators && <RuntimeOperators calculator={calculator} operators={calculator.getOperators()} key={element.name} /> ||

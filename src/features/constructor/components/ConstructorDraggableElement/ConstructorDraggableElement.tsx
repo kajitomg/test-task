@@ -52,22 +52,23 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 		})
 		return element.height
 	}
+	const setUndraggable = () => {
+		setDragElement(null)
+		return setLine(Lines.none)
+	}
+	const setActiveThisElement = (boolean: boolean, element: Element | null) => {
+		calculator.getElements().forEach((thisElement) => {
+			if (thisElement.name === element?.name) {
+				return thisElement.setActive(boolean)
+			}
+		})
+	}
 
 	const onDragOverHandler = (event: any) => {
 		event.preventDefault();
 		if (draggedElement) {
 			if (getMousePositionOnElement(event) <= getElementHeight(event) / 2) {
 				if (draggedElement.name === ElementTypes.Display) {
-					// let elem = event.target.offsetParent.firstChild.firstChild
-					// event.target.className.split(' ').map((className: any) => {
-					// 	if (className === 'calculator__button') {
-					// 		elem = event.target.offsetParent.offsetParent.firstChild.firstChild
-					// 	}
-					// })
-					// if (elem.lastElementChild.className === 'line before-line') {
-					// 	elem.removeChild(<CalculatorLine line={Lines.before} />);
-					// }
-					// return elem.append(<CalculatorLine line={Lines.before} />);пше
 					if (element.getPosition() === Positions.first) {
 						return setLine(Lines.before)
 					}
@@ -93,73 +94,50 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 	};
 
 	const onDragEndHandler = () => {
-		setDragElement(null)
-		setLine(Lines.none)
+		return setUndraggable()
 
 	};
 
 	const onDropHandler = (event: React.DragEvent<HTMLDivElement>) => {
 		event.preventDefault();
-		if (element.name === draggedElement?.name) {
-			setDragElement(null)
-			setLine(Lines.none)
-			return
-		}
 		if (isTemp) {
 			if (getMousePositionOnElement(event) <= getElementHeight(event) / 2) {
-				if (draggedElement?.getPosition() === element.getPosition() - 1) {
-					setDragElement(null)
-					return setLine(Lines.none)
-
-				}
-				calculator.getElements().forEach((e) => {
-					if (e.name === draggedElement?.name) {
-						e.setActive(false)
+				if (draggedElement) {
+					if (draggedElement?.getPosition() < element.getPosition()) {
+						AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition() - 1)
 					}
-				})
-				AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition())
+					if (draggedElement?.getPosition() >= element.getPosition()) {
+						AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition())
+					}
+				}
 			}
 			if (getMousePositionOnElement(event) >= getElementHeight(event) / 2) {
-				calculator.getElements().forEach((e) => {
-					if (e.name === draggedElement?.name) {
-						e.setActive(false)
+				if (draggedElement) {
+					if (draggedElement?.getPosition() <= element.getPosition()) {
+						AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition())
 					}
-				})
-				if ((element.getPosition() + 1) < Positions.fourth) {
-					AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition() + 1)
-				}
-				if ((element.getPosition() + 1) >= Positions.fourth) {
-					AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition())
+					if (draggedElement?.getPosition() > element.getPosition()) {
+						AddConstructorTempElement(calculatorTemp, draggedElement, element.getPosition() + 1)
+					}
 				}
 			}
 		}
-		setDragElement(null)
-		setLine(Lines.none)
+		setActiveThisElement(false, draggedElement)
+		return setUndraggable()
 
 	};
 	const onDoubleClickHandler = () => {
 		if (draggable) {
 			if (isTemp) {
 				DeleteConstructorTempElement(calculatorTemp, element)
-				calculator.getElements().forEach((e) => {
-					if (e.name === element.name) {
-						e.setActive(true)
-					}
-				})
+				return setActiveThisElement(true, element)
 			}
 			if (!isTemp) {
-				calculator.getElements().forEach((e) => {
-					if (e.name === element.name) {
-						e.setActive(false)
-					}
-				})
-				AddConstructorTempElement(calculatorTemp, element, Positions.end)
+				setActiveThisElement(false, element)
+				return AddConstructorTempElement(calculatorTemp, element, Positions.end)
 			}
 		}
 	}
-	// const getIsDraggedClass = (): string => {
-	// 	return !draggable ? 'nodragged' : ''
-	// }
 	return (
 		<div
 			className={'drag-element'}

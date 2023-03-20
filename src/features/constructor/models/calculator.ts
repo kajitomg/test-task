@@ -15,17 +15,42 @@ export class CalculatorConstructor extends Calculator {
 
 	}
 	public addElement(element: Element, position?: Positions) {
-		if (position === Positions.end) {
+
+		const isAvailabilityElement = this.checkAvailabilityElement(element)
+
+		if (!isAvailabilityElement) {
 			if (element.name === ElementTypes.Display) {
 				return this.unshiftElement(element)
 			}
-			return this.pushElement(element)
+			if (position === Positions.end) {
+				return this.pushElement(element)
+			}
+			if (position) {
+				return this.shiftElement(element, position)
+			}
+			if (!position) {
+				return this.insertElement(element, element.getPosition())
+			}
+		}
+		if (isAvailabilityElement) {
+			if (position) {
+				if (this.checkIsItPosition(element, position)) {
+					return
+				}
+				return this.shiftElement(element, position)
+			}
+		}
+	}
+	public deleteElement(element: Element, position?: Positions) {
+		if (element.name === ElementTypes.Display) {
+			return
 		}
 		if (position) {
-			return this.shiftElement(element, position)
+			this.getElements().splice(position - 1, 1)
+			return this.shiftAll()
 		}
 		if (!position) {
-			this.getElements()[element.getPosition() - 1] = element
+			this.getElements().splice(element.getPosition() - 1, 1)
 			return this.shiftAll()
 		}
 	}
@@ -37,16 +62,26 @@ export class CalculatorConstructor extends Calculator {
 		this.getElements().push(element)
 		return this.shiftAll()
 	}
+	private insertElement(element: Element, position: Positions) {
+		this.getElements()[position - 1] = element
+		return this.shiftAll()
 
-	public deleteElement(element: Element, position?: Positions) {
-		if (position) {
-			this.getElements().splice(position - 1, 1)
-			return this.shiftAll()
+	}
+	private checkAvailabilityElement(element: Element): boolean {
+		let available = false
+		this.getElements().map((thisElement) => {
+			if (thisElement.name === element.name) {
+				available = true
+			}
+		})
+		return available
+	}
+
+	private checkIsItPosition(element: Element, position: Positions): boolean {
+		if (element.getPosition() === position) {
+			return true
 		}
-		if (!position) {
-			this.getElements().splice(element.getPosition() - 1, 1)
-			return this.shiftAll()
-		}
+		return false
 	}
 
 	private shiftAll() {
@@ -56,32 +91,19 @@ export class CalculatorConstructor extends Calculator {
 	}
 
 	private shiftElement(element: Element, position: Positions) {
-		let isItElement = false
 		if (element.name === ElementTypes.Display) {
-			let isDisplayElementInElements = false
-			this.getElements().map((elem) => {
-				if (elem.name === ElementTypes.Display) {
-					return isDisplayElementInElements = true
-				}
-			})
-			if (isDisplayElementInElements) {
-				return
-			}
-			if (!isDisplayElementInElements) {
-				return this.unshiftElement(element)
-			}
+			return
 		}
-		this.getElements().forEach((thisElement) => {
-			if (thisElement.name === element.name) {
-				isItElement = true
-			}
-		})
-		if (isItElement) {
+
+		const isAvailabilityElement = this.checkAvailabilityElement(element)
+
+		if (isAvailabilityElement) {
 			this.getElements().splice(element.getPosition() - 1, 1)
 			this.getElements().splice(position - 1, 0, element)
 			return this.shiftAll()
 		}
-		if (!isItElement) {
+
+		if (!isAvailabilityElement) {
 			this.getElements().splice(position - 1, 0, element)
 			return this.shiftAll()
 		}
@@ -90,5 +112,8 @@ export class CalculatorConstructor extends Calculator {
 
 	public setActive(boolean: boolean): void {
 		this.active = boolean
+	}
+	public getActive(): boolean {
+		return this.active
 	}
 }
