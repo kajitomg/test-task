@@ -6,6 +6,7 @@ import { Element } from '../../../calculators';
 import { CalculatorConstructor, Modes } from '../../models';
 import { ConstructorDraggableElement } from '../ConstructorDraggableElement';
 import './ConstructorEqually.scss'
+import cn from 'classnames'
 
 interface ConstructorEquallyProps {
 
@@ -34,12 +35,9 @@ interface ConstructorEquallyProps {
 
 
 const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, setDragElement, element, draggable = false, calculator, calculatorTemp, isTemp = false, draggedElement }) => {
+	const wrapperClass = cn('constructor-wrapper', className, { temp: isTemp })
 
 	const [line, setLine] = useState<Lines>(Lines.none)
-
-	const getIsShadowClass = () => {
-		return isTemp ? 'temp' : ''
-	}
 
 	return (
 		<ConstructorDraggableElement
@@ -53,7 +51,7 @@ const ConstructorEqually: FC<ConstructorEquallyProps> = ({ value, className, set
 			setLine={setLine}
 		>
 			<CalculatorCase
-				className={['constructor-wrapper', className, getIsShadowClass()].join(' ')}
+				className={wrapperClass}
 			>
 				<CalculatorButton.Blue className={'constructor-equally'} draggable={draggable}>{value}</CalculatorButton.Blue>
 				{isTemp && <CalculatorLine line={line} />}

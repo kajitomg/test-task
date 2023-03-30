@@ -6,6 +6,7 @@ import { Element, Number, Numbers, NumberTypes } from '../../../calculators'
 import { CalculatorConstructor, Modes } from '../../models'
 import { ConstructorDraggableElement } from '../ConstructorDraggableElement';
 import './ConstructorNumbers.scss'
+import cn from 'classnames'
 
 interface ConstructorNumbersProps {
 
@@ -33,15 +34,12 @@ interface ConstructorNumbersProps {
 }
 
 const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, setDragElement, element, draggable = false, calculator, calculatorTemp, isTemp = false, draggedElement }) => {
+	const wrapperClass = cn('constructor-numbers', className, { temp: isTemp })
+	const getElementClass = (example: Number) => {
+		return cn('constructor-number', { big: example.getValue() === NumberTypes.Zero })
+	}
 
 	const [line, setLine] = useState<Lines>(Lines.none)
-
-	const getBigButtonClass = (example: Number): string => {
-		return example.getValue() === NumberTypes.Zero ? 'big' : ''
-	}
-	const getIsShadowClass = () => {
-		return isTemp ? 'temp' : ''
-	}
 
 	return (
 		<ConstructorDraggableElement
@@ -55,12 +53,12 @@ const ConstructorNumbers: FC<ConstructorNumbersProps> = ({ numbers, className, s
 			setLine={setLine}
 		>
 			<CalculatorCase
-				className={['constructor-numbers', className, getIsShadowClass()].join(' ')}
+				className={wrapperClass}
 			>
 				{numbers.examples.map((example) =>
 					<CalculatorButton
 						key={example.getValue()}
-						className={['constructor-number', getBigButtonClass(example)].join(' ')}
+						className={getElementClass(example)}
 					>{example.getValue()}</CalculatorButton>
 				)}
 				{isTemp && <CalculatorLine line={line} />}

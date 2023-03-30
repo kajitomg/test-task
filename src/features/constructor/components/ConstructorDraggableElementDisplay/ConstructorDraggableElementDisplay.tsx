@@ -75,9 +75,8 @@ const ConstructorDraggableElementDisplay: FC<ConstructorDraggableElementProps> =
 					}
 				}
 			}
+			setActiveThisElement(false, draggedElement)
 		}
-
-		setActiveThisElement(false, draggedElement)
 		return setUndraggable()
 
 	};

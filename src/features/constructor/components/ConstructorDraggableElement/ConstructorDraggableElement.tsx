@@ -121,8 +121,8 @@ const ConstructorDraggableElement: FC<ConstructorDraggableElementProps> = ({ dra
 					}
 				}
 			}
+			setActiveThisElement(false, draggedElement)
 		}
-		setActiveThisElement(false, draggedElement)
 		return setUndraggable()
 
 	};

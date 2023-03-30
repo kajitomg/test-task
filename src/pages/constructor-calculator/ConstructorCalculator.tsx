@@ -10,6 +10,7 @@ import { RuntimeElements } from '../../features/runtime'
 import { ConstructorTempElements } from '../../features/constructor/components/ConstructorTempElements'
 import { ConstructorDraggableArea } from '../../features/constructor/components/ConstructorDraggableArea'
 import './ConstructorCalculator.scss'
+import cn from 'classnames'
 
 
 interface ConstructorCalculatorProps {
@@ -43,6 +44,9 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 	const getIsElementsInTempConstructor = (): boolean => {
 		return constructorTempElements.length > 0
 	}
+
+	const tempClass = cn('calculator-page__calculator-runtime', 'calculator', 'runtime', { empty: !getIsElementsInTempConstructor() }, { dragOver: dragOver })
+	const runtimeClass = cn('calculator-page__calculator-runtime', 'calculator', 'runtime')
 
 	return (
 		<section className={'calculator-page'}>
@@ -81,7 +85,7 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 							draggable={!getIsElementsInTempConstructor()}
 						>
 							<div
-								className={['calculator-page__calculator-runtime', 'calculator', 'runtime', !getIsElementsInTempConstructor() ? 'empty' : '', dragOver ? 'dragover' : ''].join(' ')}
+								className={tempClass}
 								draggable={false}
 							>
 								{
@@ -105,7 +109,7 @@ const ConstructorCalculator: FC<ConstructorCalculatorProps> = ({ }) => {
 					}
 					{
 						getIsRuntimeMode() &&
-						<div className={['calculator-page__calculator-runtime', 'calculator', 'runtime'].join(' ')}
+						<div className={runtimeClass}
 						>
 							<RuntimeElements
 								mode={mode}

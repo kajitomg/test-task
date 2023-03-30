@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import './Item.scss'
+import cn from 'classnames'
 
 interface ItemProps {
 
@@ -14,8 +15,9 @@ interface ItemProps {
 }
 
 const Item: FC<ItemProps> = ({ children, className, available, onClick }) => {
+	const itemClass = cn('modes__item', className, { available: available })
 	return (
-		<button className={['modes__item', className, available && 'available'].join(' ')} onClick={() => onClick()}>
+		<button className={itemClass} onClick={() => onClick()}>
 			{children}
 		</button>
 	)

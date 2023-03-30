@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import './CalculatorCase.scss'
+import cn from 'classnames'
 
 interface CalculatorCaseProps {
 
@@ -10,10 +11,11 @@ interface CalculatorCaseProps {
 }
 
 const CalculatorCase: FC<CalculatorCaseProps> = ({ children, className }) => {
+	const caseClass = cn('calculator__case', className)
 
 	return (
 		<div
-			className={['calculator__case', className].join(' ')}
+			className={caseClass}
 		>{children}</div>
 	)
 }

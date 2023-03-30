@@ -1,9 +1,10 @@
 import React, { FC } from 'react'
 import { CalculatorButton } from '../../../../shared/ui/CalculatorButton'
-import { Numbers, NumberTypes } from '../../../calculators';
+import { Number, Numbers, NumberTypes } from '../../../calculators';
 import { useActions } from '../../../hooks';
 import { CalculatorRuntime } from '../../models';
 import './RuntimeNumbers.scss'
+import cn from 'classnames'
 
 interface RuntimeNumbersProps {
 
@@ -17,6 +18,10 @@ const RuntimeNumbers: FC<RuntimeNumbersProps> = ({ numbers, calculator }) => {
 
 	const { AddSymbol } = useActions()
 
+	const getElementClass = (example: Number) => {
+		return cn('runtime-number', example.getValue() === NumberTypes.Zero && 'big')
+	}
+
 	const onClickHandler = (value: NumberTypes) => {
 		AddSymbol(calculator, value)
 	}
@@ -27,7 +32,7 @@ const RuntimeNumbers: FC<RuntimeNumbersProps> = ({ numbers, calculator }) => {
 				numbers.examples.map((example) =>
 					<CalculatorButton
 						key={example.getValue()}
-						className={['runtime-number', example.getValue() === NumberTypes.Zero && 'big'].join(' ')}
+						className={getElementClass(example)}
 						onClick={() => onClickHandler(example.getValue())}
 					>{example.getValue()}</CalculatorButton>
 				)

@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import './CalculatorViewer.scss'
+import cn from 'classnames'
 
 interface CalculatorViewerProps {
 
@@ -14,9 +15,10 @@ interface CalculatorViewerProps {
 }
 
 const CalculatorViewer: FC<CalculatorViewerProps> = ({ children, className, active, draggable }) => {
+	const viewerClass = cn('calculator__viewer', className, { active: active })
 
 	return (
-		<div className={['calculator__viewer', className, active ? 'active' : ''].join(' ')} draggable={draggable}>{children}</div>
+		<div className={viewerClass} draggable={draggable}>{children}</div>
 	)
 }
 

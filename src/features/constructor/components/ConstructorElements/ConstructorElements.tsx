@@ -6,6 +6,7 @@ import { ConstructorDisplay } from '../ConstructorDisplay';
 import { ConstructorEqually } from '../ConstructorEqually';
 import { ConstructorNumbers } from '../ConstructorNumbers';
 import { ConstructorOperators } from '../ConstructorOperators';
+import cn from 'classnames'
 
 interface ConstructorElementsProps {
 
@@ -22,15 +23,14 @@ interface ConstructorElementsProps {
 }
 
 const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedElement, calculator, calculatorTemp, draggedElement }) => {
-
+	const getClassElement = (element: Element) => {
+		return cn({ active: mode === Modes.constructor && element.getActive() && draggedElement?.name !== element?.name })
+	}
 
 	const { constructorElements } = useTypedSelector(state => state.calculatorConstructor)
 
 	const { AddConstructorElement } = useActions()
 
-	const getConditionClass = (element: Element) => {
-		return mode === Modes.constructor && element.getActive() && draggedElement?.name !== element?.name
-	}
 	const getConditionVisible = (element: Element) => {
 		return mode === Modes.constructor || element.getActive()
 	}
@@ -63,7 +63,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 					draggedElement={draggedElement}
 					element={element}
 					value={calculator.getDisplay()?.getValue()}
-					className={getConditionClass(element) ? 'active' : ''} /> ||
+					className={getClassElement(element)} /> ||
 
 				getConditionVisible(element) && element.name === ElementTypes.Operators && <ConstructorOperators
 					operators={calculator.getOperators()}
@@ -75,7 +75,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
 					element={element}
-					className={getConditionClass(element) ? 'active' : ''} /> ||
+					className={getClassElement(element)} /> ||
 
 				getConditionVisible(element) && element.name === ElementTypes.Numbers && <ConstructorNumbers
 					numbers={calculator.getNumbers()}
@@ -87,7 +87,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
 					element={element}
-					className={getConditionClass(element) ? 'active' : ''} /> ||
+					className={getClassElement(element)} /> ||
 
 				getConditionVisible(element) && element.name === ElementTypes.Equally && <ConstructorEqually
 					value={calculator.getEqually()?.getValue()}
@@ -99,7 +99,7 @@ const ConstructorElements: FC<ConstructorElementsProps> = ({ mode, setDraggedEle
 					setDragElement={setDraggedElement}
 					draggedElement={draggedElement}
 					element={element}
-					className={getConditionClass(element) ? 'active' : ''} />
+					className={getClassElement(element)} />
 			)
 			}
 		</>

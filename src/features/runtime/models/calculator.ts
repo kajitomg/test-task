@@ -1,5 +1,6 @@
 import { Calculator, NumberTypes, OperatorTypes, Positions } from "../../calculators";
 
+
 export class CalculatorRuntime extends Calculator {
 	private value: string = '0';
 	private previewValue: string = '';
@@ -26,6 +27,7 @@ export class CalculatorRuntime extends Calculator {
 	public setValue(value: string) {
 		this.getDisplay()?.setValue(value)
 		this.value = value
+
 	}
 	public getValue() {
 		return this.value
@@ -37,7 +39,10 @@ export class CalculatorRuntime extends Calculator {
 	}
 	public setPreviewValue(value: string): void {
 		this.previewValue = value
-		if (value.length >= 15) {
+		if (value.length >= 17) {
+			this.previewValue = this.makeNumber(value).toExponential(4)
+		}
+		if (value.length >= 15 && value.length < 17) {
 			this.previewValue = this.roundingString(value, 15)
 		}
 	}

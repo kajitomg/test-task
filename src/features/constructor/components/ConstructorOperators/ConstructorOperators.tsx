@@ -6,6 +6,7 @@ import { Element, Operators } from '../../../calculators';
 import { CalculatorConstructor, Modes } from '../../models';
 import { ConstructorDraggableElement } from '../ConstructorDraggableElement';
 import './ConstructorOperators.scss'
+import cn from 'classnames'
 
 interface ConstructorOperatorsProps {
 
@@ -32,12 +33,9 @@ interface ConstructorOperatorsProps {
 }
 
 const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, className, setDragElement, element, mode, draggable = false, calculator, calculatorTemp, isTemp = false, draggedElement }) => {
+	const wrapperClass = cn('constructor-operators', className, { temp: isTemp })
 
 	const [line, setLine] = useState<Lines>(Lines.none)
-
-	const getIsShadowClass = () => {
-		return isTemp ? 'temp' : ''
-	}
 
 	return (
 		<ConstructorDraggableElement
@@ -51,12 +49,12 @@ const ConstructorOperators: FC<ConstructorOperatorsProps> = ({ operators, classN
 			setLine={setLine}
 		>
 			<CalculatorCase
-				className={['constructor-operators', className, getIsShadowClass()].join(' ')}
+				className={wrapperClass}
 			>
 				{operators.examples.map((example) =>
 					<CalculatorButton
 						key={example.getValue()}
-						className={['constructor-operator'].join(' ')}
+						className={'constructor-operator'}
 
 					>{example.getValue()}</CalculatorButton>
 				)}

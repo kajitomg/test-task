@@ -1,5 +1,6 @@
 import './CalculatorButton.scss'
 import { Blue } from './instances/Blue';
+import cn from 'classnames'
 
 export interface CalculatorButtonProps {
 
@@ -14,8 +15,9 @@ export interface CalculatorButtonProps {
 }
 
 const CalculatorButton = ({ children, className, onClick }: CalculatorButtonProps) => {
+	const buttonClass = cn('calculator__button', className)
 	return (
-		<button className={['calculator__button', className].join(' ')} onClick={onClick}>{children}</button>
+		<button className={buttonClass} onClick={onClick}>{children}</button>
 	)
 }
 

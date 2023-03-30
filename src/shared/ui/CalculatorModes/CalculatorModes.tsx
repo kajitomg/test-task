@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { Item } from './item'
 import './CalculatorModes.scss'
+import cn from 'classnames'
 
 interface CalculatorModesProps {
 
@@ -11,8 +12,9 @@ interface CalculatorModesProps {
 }
 
 const CalculatorModes = ({ children, className }: CalculatorModesProps) => {
+	const modesClass = cn('calculator__modes', 'modes', className)
 	return (
-		<div className={['calculator__modes', 'modes', className].join(' ')}>{children}</div>
+		<div className={modesClass}>{children}</div>
 	)
 }
 
